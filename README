@@ -1,0 +1,13 @@
+C# NumberExtensions
+
+Adds a few useful extension methods to the standard number classes.
+
+BitCount: Counts the number of bits set in an integer.
+
+ReverseBits: Reverses the bits in an integer.
+
+IsPowerOf2: Returns true if the integer or floating-point number is a power of 2.
+
+Log2Floor: Returns the floor of the base 2 logarithm of the integer or floating-point number. Faster than Math.Floor(Math.Log2(n)).
+
+Log2Ceiling: Returns the ceiling of the base 2 logarithm of the integer or floating-point number. Faster than Math.Ceiling(Math.Log2(n)).
