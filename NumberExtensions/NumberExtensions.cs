@@ -1,6 +1,15 @@
 ﻿namespace NumberExtensions;
 
 public static class NumberExtensions {
+    // used for BitCount and ReverseBits
+    private static readonly UInt128 UINT128_MASK1 = new(0x5555555555555555UL, 0x5555555555555555UL);
+    private static readonly UInt128 UINT128_MASK2 = new(0x3333333333333333UL, 0x3333333333333333UL);
+    private static readonly UInt128 UINT128_MASK4 = new(0x0F0F0F0F0F0F0F0FUL, 0x0F0F0F0F0F0F0F0FUL);
+    private static readonly UInt128 UINT128_MASK8 = new(0x00FF00FF00FF00FFUL, 0x00FF00FF00FF00FFUL);
+    private static readonly UInt128 UINT128_MASK16 = new(0x0000FFFF0000FFFFUL, 0x0000FFFF0000FFFFUL);
+    private static readonly UInt128 UINT128_MASK32 = new(0x00000000FFFFFFFFUL, 0x00000000FFFFFFFFUL);
+    private static readonly UInt128 UINT128_MASK64 = new(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL);
+    
     /// <summary>
     /// Counts the number of bits set in the value.
     /// </summary>
@@ -77,6 +86,23 @@ public static class NumberExtensions {
         value = (value & 0x00FF00FF00FF00FFUL) + ((value >> 8) & 0x00FF00FF00FF00FFUL);
         value = (value & 0x0000FFFF0000FFFFUL) + ((value >> 16) & 0x0000FFFF0000FFFFUL);
         return (int)((value & 0x00000000FFFFFFFFUL) + (value >> 32));
+    }
+
+    public static int BitCount(this Int128 value) => BitCount((UInt128)value);
+
+    /// <summary>
+    /// Counts the number of bits set in the value.
+    /// </summary>
+    /// <param name="value">value to count bits in</param>
+    /// <returns>number of bits set in value</returns>
+    public static int BitCount(this UInt128 value) {
+        value = (value & UINT128_MASK1) + ((value >> 1) & UINT128_MASK1);
+        value = (value & UINT128_MASK2) + ((value >> 2) & UINT128_MASK2);
+        value = (value & UINT128_MASK4) + ((value >> 4) & UINT128_MASK4);
+        value = (value & UINT128_MASK8) + ((value >> 8) & UINT128_MASK8);
+        value = (value & UINT128_MASK16) + ((value >> 16) & UINT128_MASK16);
+        value = (value & UINT128_MASK32) + ((value >> 32) & UINT128_MASK32);
+        return (int)((value & UINT128_MASK64) + (value >> 64));
     }
     
     /// <summary>
@@ -158,6 +184,28 @@ public static class NumberExtensions {
     }
 
     /// <summary>
+    /// Reverse the bits in the value.
+    /// </summary>
+    /// <param name="value">value to reverse bits of</param>
+    /// <returns>value with bits reversed</returns>
+    public static Int128 ReverseBits(this Int128 value) => (Int128)ReverseBits((UInt128)value);
+    
+    /// <summary>
+    /// Reverse the bits in the value.
+    /// </summary>
+    /// <param name="value">value to reverse bits of</param>
+    /// <returns>value with bits reversed</returns>
+    public static UInt128 ReverseBits(this UInt128 value) {
+        value = (UInt128)(((value >> 1) & UINT128_MASK1) | ((value & UINT128_MASK1) << 1));
+        value = (UInt128)(((value >> 2) & UINT128_MASK2) | ((value & UINT128_MASK2) << 2));
+        value = (UInt128)(((value >> 4) & UINT128_MASK4) | ((value & UINT128_MASK4) << 4));
+        value = (UInt128)(((value >> 8) & UINT128_MASK8) | ((value & UINT128_MASK8) << 8));
+        value = (UInt128)(((value >> 16) & UINT128_MASK16) | ((value & UINT128_MASK16) << 16));
+        value = (UInt128)(((value >> 32) & UINT128_MASK32) | ((value & UINT128_MASK32) << 32));
+        return (value >> 64) | (value << 64);
+    }
+
+    /// <summary>
     /// Determines if number is a power of 2.
     /// </summary>
     /// <param name="value">value to check</param>
@@ -226,6 +274,24 @@ public static class NumberExtensions {
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
     public static bool IsPowerOf2(this ulong value) {
+        return value > 0 && (value & (value - 1)) == 0;
+    }
+
+    /// <summary>
+    /// Determines if number is a power of 2.
+    /// </summary>
+    /// <param name="value">value to check</param>
+    /// <returns>true if value is a power of 2</returns>
+    public static bool IsPowerOf2(this Int128 value) {
+        return value > 0 && (value & (value - 1)) == 0;
+    }
+    
+    /// <summary>
+    /// Determines if number is a power of 2.
+    /// </summary>
+    /// <param name="value">value to check</param>
+    /// <returns>true if value is a power of 2</returns>
+    public static bool IsPowerOf2(this UInt128 value) {
         return value > 0 && (value & (value - 1)) == 0;
     }
 
@@ -398,7 +464,7 @@ public static class NumberExtensions {
                 return log;
         throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
     }
-
+    
     /// <summary>
     /// Calculates the integer portion of the base 2 logarithm of the value.
     /// </summary>
@@ -413,6 +479,34 @@ public static class NumberExtensions {
         throw new ArgumentOutOfRangeException(nameof(value), "value must be non-zero");
     }
 
+    /// <summary>
+    /// Calculates the integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
+    public static int Log2Floor(this Int128 value) {
+        int log = 126;
+        for (Int128 b = ((Int128)1) << 126; b > 0; b >>= 1, log--)
+            if (value >= b)
+                return log;
+        throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+    }
+    
+    /// <summary>
+    /// Calculates the integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
+    public static int Log2Floor(this UInt128 value) {
+        int log = 127;
+        for (UInt128 b = ((UInt128)1) << 127; b > 0; b >>= 1, log--)
+            if (value >= b)
+                return log;
+        throw new ArgumentOutOfRangeException(nameof(value), "value must be non-zero");
+    }
+    
     /// <summary>
     /// Calculates the integer portion of the base 2 logarithm of the value.
     /// </summary>
@@ -603,6 +697,36 @@ public static class NumberExtensions {
         if (value == 1) return 0;
         int log = 64;
         for (ulong b = 1UL << 63; b > 0; b >>= 1, log--)
+            if (value > b)
+                return log;
+        throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+    }
+
+    /// <summary>
+    /// Calculates the rounded up integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
+    public static int Log2Ceiling(this Int128 value) {
+        if (value == 1) return 0;
+        int log = 127;
+        for (Int128 b = ((Int128)1) << 126; b > 0; b >>= 1, log--)
+            if (value > b)
+                return log;
+        throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+    }
+
+    /// <summary>
+    /// Calculates the rounded up integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
+    public static int Log2Ceiling(this UInt128 value) {
+        if (value == 1) return 0;
+        int log = 128;
+        for (UInt128 b = ((UInt128)1) << 127; b > 0; b >>= 1, log--)
             if (value > b)
                 return log;
         throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");

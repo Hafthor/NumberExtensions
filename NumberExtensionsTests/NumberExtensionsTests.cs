@@ -10,11 +10,12 @@ public class NumberExtensionsTests {
             0, 1, 1, 2, 1, 2, 2, 3, // 0-7
             1, 2, 2, 3, 2, 3, 3, 4, // 8-15
         };
-        byte b = 0;
-        ushort w = 0;
-        uint dw = 0;
-        ulong qw = 0;
-        for (int i = 0; i < 16; i++, b += 0x11, w += 0x1111, dw += 0x11111111, qw += 0x1111111111111111) {
+        byte b = 0, bp = 0x11;
+        ushort w = 0, wp = 0x1111;
+        uint dw = 0, dwp = 0x11111111;
+        ulong qw = 0, qwp = 0x1111111111111111;
+        UInt128 ow = 0, owp = new UInt128(0x1111111111111111, 0x1111111111111111);
+        for (int i = 0; i < 16; i++, b += bp, w += wp, dw += dwp, qw += qwp, ow += owp) {
             var bitCount = bitCounts[i];
             Assert.AreEqual(bitCount, ((byte)i).BitCount());
             Assert.AreEqual(bitCount, ((sbyte)i).BitCount());
@@ -24,6 +25,8 @@ public class NumberExtensionsTests {
             Assert.AreEqual(bitCount, ((int)i).BitCount());
             Assert.AreEqual(bitCount, ((ulong)i).BitCount());
             Assert.AreEqual(bitCount, ((long)i).BitCount());
+            Assert.AreEqual(bitCount, ((Int128)i).BitCount());
+            Assert.AreEqual(bitCount, ((UInt128)i).BitCount());
 
             Assert.AreEqual(bitCount * 2, b.BitCount());
             Assert.AreEqual(bitCount * 2, ((sbyte)b).BitCount());
@@ -33,6 +36,8 @@ public class NumberExtensionsTests {
             Assert.AreEqual(bitCount * 8, ((int)dw).BitCount());
             Assert.AreEqual(bitCount * 16, qw.BitCount());
             Assert.AreEqual(bitCount * 16, ((long)qw).BitCount());
+            Assert.AreEqual(bitCount * 32, ow.BitCount());
+            Assert.AreEqual(bitCount * 32, ((Int128)ow).BitCount());
         }
 
         Assert.AreEqual(7, sbyte.MaxValue.BitCount());
@@ -43,11 +48,14 @@ public class NumberExtensionsTests {
         Assert.AreEqual(32, uint.MaxValue.BitCount());
         Assert.AreEqual(63, long.MaxValue.BitCount());
         Assert.AreEqual(64, ulong.MaxValue.BitCount());
+        Assert.AreEqual(127, Int128.MaxValue.BitCount());
+        Assert.AreEqual(128, UInt128.MaxValue.BitCount());
 
         Assert.AreEqual(8, ((sbyte)-1).BitCount());
         Assert.AreEqual(16, ((short)-1).BitCount());
         Assert.AreEqual(32, ((int)-1).BitCount());
         Assert.AreEqual(64, ((long)-1).BitCount());
+        Assert.AreEqual(128, ((Int128)(-1)).BitCount());
     }
 
     [TestMethod]
@@ -60,6 +68,8 @@ public class NumberExtensionsTests {
         Assert.AreEqual((uint)0xDB42DB42, ((uint)0x42DB42DB).ReverseBits());
         Assert.AreEqual(unchecked((long)0xDB42DB42DB42DB42), ((long)0x42DB42DB42DB42DB).ReverseBits());
         Assert.AreEqual((ulong)0xDB42DB42DB42DB42, ((ulong)0x42DB42DB42DB42DB).ReverseBits());
+        Assert.AreEqual(new Int128(0xDB42DB42DB42DB42, 0xDB42DB42DB42DB42), new Int128(0x42DB42DB42DB42DBUL, 0x42DB42DB42DB42DBUL).ReverseBits());
+        Assert.AreEqual(new UInt128(0xDB42DB42DB42DB42, 0xDB42DB42DB42DB42), new UInt128(0x42DB42DB42DB42DBUL, 0x42DB42DB42DB42DBUL).ReverseBits());
     }
 
     [TestMethod]
@@ -74,6 +84,8 @@ public class NumberExtensionsTests {
             Assert.IsFalse(((uint)v).IsPowerOf2());
             Assert.IsFalse(((long)v).IsPowerOf2());
             Assert.IsFalse(((ulong)v).IsPowerOf2());
+            Assert.IsFalse(((Int128)v).IsPowerOf2());
+            Assert.IsFalse(((UInt128)v).IsPowerOf2());
             Assert.IsFalse(((Half)v).IsPowerOf2());
             Assert.IsFalse(((float)v).IsPowerOf2());
             Assert.IsFalse(((double)v).IsPowerOf2());
@@ -89,6 +101,8 @@ public class NumberExtensionsTests {
             Assert.IsTrue(((uint)v).IsPowerOf2());
             Assert.IsTrue(((long)v).IsPowerOf2());
             Assert.IsTrue(((ulong)v).IsPowerOf2());
+            Assert.IsTrue(((Int128)v).IsPowerOf2());
+            Assert.IsTrue(((UInt128)v).IsPowerOf2());
             Assert.IsTrue(((Half)v).IsPowerOf2());
             Assert.IsTrue(((float)v).IsPowerOf2());
             Assert.IsTrue(((double)v).IsPowerOf2());
@@ -103,7 +117,9 @@ public class NumberExtensionsTests {
         Assert.IsFalse(((uint)((1U << 31) - 1)).IsPowerOf2());
         Assert.IsFalse(((long)((1L << 62) - 1)).IsPowerOf2());
         Assert.IsFalse(((ulong)((1UL << 63) - 1)).IsPowerOf2());
-
+        Assert.IsFalse((((Int128.One << 126) - 1)).IsPowerOf2());
+        Assert.IsFalse((((UInt128.One << 127) - 1)).IsPowerOf2());
+        
         // test highest power of 2
         Assert.IsTrue(((sbyte)(1 << 6)).IsPowerOf2());
         Assert.IsTrue(((byte)(1 << 7)).IsPowerOf2());
@@ -113,6 +129,8 @@ public class NumberExtensionsTests {
         Assert.IsTrue(((uint)(1U << 31)).IsPowerOf2());
         Assert.IsTrue(((long)(1L << 62)).IsPowerOf2());
         Assert.IsTrue(((ulong)(1UL << 63)).IsPowerOf2());
+        Assert.IsTrue(((Int128.One << 126)).IsPowerOf2());
+        Assert.IsTrue(((UInt128.One << 127)).IsPowerOf2());
 
         // test one more than highest power of 2
         Assert.IsFalse(((sbyte)((1 << 6) + 1)).IsPowerOf2());
@@ -123,6 +141,8 @@ public class NumberExtensionsTests {
         Assert.IsFalse(((uint)((1U << 31) + 1)).IsPowerOf2());
         Assert.IsFalse(((long)((1L << 62) + 1)).IsPowerOf2());
         Assert.IsFalse(((ulong)((1UL << 63) + 1)).IsPowerOf2());
+        Assert.IsFalse((((Int128.One << 126) + 1)).IsPowerOf2());
+        Assert.IsFalse((((UInt128.One << 127) + 1)).IsPowerOf2());
 
         // test special floating point values
         Assert.IsFalse(double.PositiveInfinity.IsPowerOf2());
@@ -175,6 +195,7 @@ public class NumberExtensionsTests {
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((short)-1).Log2Ceiling());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((int)-1).Log2Ceiling());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((long)-1).Log2Ceiling());
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((Int128)(-1)).Log2Ceiling());
 
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((double)-1).Log2Floor());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((float)-1).Log2Floor());
@@ -200,7 +221,9 @@ public class NumberExtensionsTests {
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((int)0).Log2Ceiling());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((ulong)0).Log2Ceiling());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((long)0).Log2Ceiling());
-
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Int128.Zero.Log2Ceiling());
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => UInt128.Zero.Log2Ceiling());
+        
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((double)0).Log2Floor());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((float)0).Log2Floor());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((Half)0).Log2Floor());
@@ -239,7 +262,9 @@ public class NumberExtensionsTests {
         Assert.AreEqual(0, ((int)1).Log2Ceiling());
         Assert.AreEqual(0, ((ulong)1).Log2Ceiling());
         Assert.AreEqual(0, ((long)1).Log2Ceiling());
-
+        Assert.AreEqual(0, UInt128.One.Log2Ceiling());
+        Assert.AreEqual(0, Int128.One.Log2Ceiling());
+        
         // test log2(maxvalue) and log2(epsilon) is correct
         // Note: .NET incorrectly calculates Math.Log2(double.MaxValue) as exactly 1024
         Assert.AreEqual(Math.Floor(Math.Log2(double.MaxValue)) - 1, double.MaxValue.Log2Floor());
@@ -260,6 +285,7 @@ public class NumberExtensionsTests {
         var random = new Random(0);
         int byteCount = 0, sbyteCount = 0, ushortCount = 0, shortCount = 0, 
             uintCount = 0, intCount = 0, ulongCount = 0, longCount = 0, 
+            int128Count = 0, uint128Count = 0,
             doubleCount = 0, floatCount = 0, halfCount = 0;
         const int tests = 1_000_000, expectedUnsigned = 990_000, expectedSigned = 480_000;
         for (int testNumber = 0; testNumber < tests; testNumber++) {
@@ -271,6 +297,9 @@ public class NumberExtensionsTests {
             var intValue = (int)uintValue;
             var ulongValue = (ulong)random.Next(0, 65536) << 48 | (ulong)random.Next(0, 65536) << 32 | uintValue;
             var longValue = (long)ulongValue;
+            var int128LowValue = (ulong)random.Next(0, 65536) << 48 | (ulong)random.Next(0, 16777216) << 24 | (ulong)random.Next(0, 16777216);
+            var uint128Value = new UInt128(ulongValue, int128LowValue);
+            var int128Value = new Int128((ulong)longValue, int128LowValue);
             var doubleValue = BitConverter.UInt64BitsToDouble(ulongValue);
             var floatValue = BitConverter.UInt32BitsToSingle(uintValue);
             var halfValue = BitConverter.UInt16BitsToHalf(ushortValue);
@@ -316,6 +345,19 @@ public class NumberExtensionsTests {
                 Assert.AreEqual(Math.Ceiling(Math.Log2(longValue)), longValue.Log2Ceiling());
                 longCount++;
             }
+            // NOTE: forced to convert to double since Math.Log2 and Math.Floor do not support Int128/UInt128
+            //       but this should not affect the test results unless we get really unlucky on an edge case
+            //       on a really large number. The random seed used (0) is fixed, so this test is predictable.
+            if (uint128Value > 0) {
+                Assert.AreEqual(Math.Floor(Math.Log2((double)uint128Value)), uint128Value.Log2Floor());
+                Assert.AreEqual(Math.Ceiling(Math.Log2((double)uint128Value)), uint128Value.Log2Ceiling());
+                uint128Count++;
+            }
+            if (int128Value > 0) {
+                Assert.AreEqual(Math.Floor(Math.Log2((double)int128Value)), int128Value.Log2Floor());
+                Assert.AreEqual(Math.Ceiling(Math.Log2((double)int128Value)), int128Value.Log2Ceiling());
+                int128Count++;
+            }
 
             if (!double.IsNaN(doubleValue) && doubleValue > 0 && !double.IsPositiveInfinity(doubleValue)) {
                 Assert.AreEqual(Math.Floor(Math.Log2(doubleValue)), doubleValue.Log2Floor());
@@ -341,6 +383,8 @@ public class NumberExtensionsTests {
         Assert.IsTrue(intCount > expectedSigned, "number of int values tested less than expected");
         Assert.IsTrue(ulongCount > expectedUnsigned, "number of ulong values tested less than expected");
         Assert.IsTrue(longCount > expectedSigned, "number of long values tested less than expected");
+        Assert.IsTrue(uint128Count > expectedUnsigned, "number of uint128 values tested less than expected");
+        Assert.IsTrue(int128Count > expectedSigned, "number of int128 values tested less than expected");
         Assert.IsTrue(doubleCount > expectedSigned, "number of double values tested less than expected");
         Assert.IsTrue(floatCount > expectedSigned, "number of float values tested less than expected");
         Assert.IsTrue(halfCount > expectedSigned, "number of Half values tested less than expected");
