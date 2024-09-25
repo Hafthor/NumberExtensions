@@ -1,4 +1,6 @@
-﻿namespace NumberExtensions;
+﻿using System.Numerics;
+
+namespace NumberExtensions;
 
 public static class NumberExtensions {
     // used for BitCount and ReverseBits
@@ -805,5 +807,373 @@ public static class NumberExtensions {
 
         // there is an implied 1 prefix on the mantissa normally
         return exponent - 15 + (mantissa == 0 ? 0 : 1);
+    }
+
+    /// <summary>
+    /// Performs a modulo multiplication operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="a">multiplicand</param>
+    /// <param name="b">multiplicand</param>
+    /// <returns>ab % mod</returns>
+    public static byte ModMul(this byte mod, byte a, byte b) => (byte)((uint)a * b % mod);
+    
+    /// <summary>
+    /// Performs a modulo multiplication operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="a">multiplicand</param>
+    /// <param name="b">multiplicand</param>
+    /// <returns>ab % mod</returns>
+    public static sbyte ModMul(this sbyte mod, sbyte a, sbyte b) => (sbyte)((int)a * b % mod);
+    
+    /// <summary>
+    /// Performs a modulo multiplication operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="a">multiplicand</param>
+    /// <param name="b">multiplicand</param>
+    /// <returns>ab % mod</returns>
+    public static ushort ModMul(this ushort mod, ushort a, ushort b) => (ushort)((uint)a * b % mod);
+    
+    /// <summary>
+    /// Performs a modulo multiplication operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="a">multiplicand</param>
+    /// <param name="b">multiplicand</param>
+    /// <returns>ab % mod</returns>
+    public static short ModMul(this short mod, short a, short b) => (short)((int)a * b % mod);
+    
+    /// <summary>
+    /// Performs a modulo multiplication operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="a">multiplicand</param>
+    /// <param name="b">multiplicand</param>
+    /// <returns>ab % mod</returns>
+    public static uint ModMul(this uint mod, uint a, uint b) => (uint)((ulong)a * b % mod);
+    
+    /// <summary>
+    /// Performs a modulo multiplication operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="a">multiplicand</param>
+    /// <param name="b">multiplicand</param>
+    /// <returns>ab % mod</returns>
+    public static int ModMul(this int mod, int a, int b) => (int)((long)a * b % mod);
+    
+    /// <summary>
+    /// Performs a modulo multiplication operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="a">multiplicand</param>
+    /// <param name="b">multiplicand</param>
+    /// <returns>ab % mod</returns>
+    public static ulong ModMul(this ulong mod, ulong a, ulong b) => (ulong)((UInt128)a * b % mod);
+    
+    /// <summary>
+    /// Performs a modulo multiplication operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="a">multiplicand</param>
+    /// <param name="b">multiplicand</param>
+    /// <returns>ab % mod</returns>
+    public static long ModMul(this long mod, long a, long b) => (long)((Int128)a * b % mod);
+    
+    /// <summary>
+    /// Performs a modulo multiplication operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="a">multiplicand</param>
+    /// <param name="b">multiplicand</param>
+    /// <returns>ab % mod</returns>
+    public static UInt128 ModMul(this UInt128 mod, UInt128 a, UInt128 b) => (UInt128)((BigInteger)a * b % mod);
+    
+    /// <summary>
+    /// Performs a modulo multiplication operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="a">multiplicand</param>
+    /// <param name="b">multiplicand</param>
+    /// <returns>ab % mod</returns>
+    public static Int128 ModMul(this Int128 mod, Int128 a, Int128 b) => (Int128)((BigInteger)a * b % mod);
+    
+    /// <summary>
+    /// Performs a modulo multiplication operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="a">multiplicand</param>
+    /// <param name="b">multiplicand</param>
+    /// <returns>ab % mod</returns>
+    public static BigInteger ModMul(this BigInteger mod, BigInteger a, BigInteger b) => a * b % mod;
+
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <param name="mul">optional multiplicand</param>
+    /// <returns>(mul * num^exp) % mod</returns>
+    public static byte ModPow(this byte mod, byte num, byte exp, byte mul = 1) {
+        if (exp > 0) {
+            for (;;) {
+                if ((exp & 1) == 1)
+                    mul = mod.ModMul(mul, num);
+                exp >>= 1;
+                if (exp == 0)
+                    break;
+                num = mod.ModMul(num, num);
+            }
+        }
+        return mul;
+    }
+    
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <param name="mul">optional multiplicand</param>
+    /// <returns>(mul * num^exp) % mod</returns>
+    public static sbyte ModPow(this sbyte mod, sbyte num, sbyte exp, sbyte mul = 1) {
+        if (exp > 0) {
+            for (;;) {
+                if ((exp & 1) == 1)
+                    mul = mod.ModMul(mul, num);
+                exp >>= 1;
+                if (exp == 0)
+                    break;
+                num = mod.ModMul(num, num);
+            }
+        }
+        return mul;
+    }
+    
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <param name="mul">optional multiplicand</param>
+    /// <returns>(mul * num^exp) % mod</returns>
+    public static ushort ModPow(this ushort mod, ushort num, ushort exp, ushort mul = 1) {
+        if (exp > 0) {
+            for (;;) {
+                if ((exp & 1) == 1)
+                    mul = mod.ModMul(mul, num);
+                exp >>= 1;
+                if (exp == 0)
+                    break;
+                num = mod.ModMul(num, num);
+            }
+        }
+        return mul;
+    }
+    
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <param name="mul">optional multiplicand</param>
+    /// <returns>(mul * num^exp) % mod</returns>
+    public static short ModPow(this short mod, short num, short exp, short mul = 1) {
+        if (exp > 0) {
+            for (;;) {
+                if ((exp & 1) == 1)
+                    mul = mod.ModMul(mul, num);
+                exp >>= 1;
+                if (exp == 0)
+                    break;
+                num = mod.ModMul(num, num);
+            }
+        }
+        return mul;
+    }
+    
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <param name="mul">optional multiplicand</param>
+    /// <returns>(mul * num^exp) % mod</returns>
+    public static uint ModPow(this uint mod, uint num, uint exp, uint mul = 1) {
+        if (exp > 0) {
+            for (;;) {
+                if ((exp & 1) == 1)
+                    mul = mod.ModMul(mul, num);
+                exp >>= 1;
+                if (exp == 0)
+                    break;
+                num = mod.ModMul(num, num);
+            }
+        }
+        return mul;
+    }
+    
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <param name="mul">optional multiplicand</param>
+    /// <returns>(mul * num^exp) % mod</returns>
+    public static int ModPow(this int mod, int num, int exp, int mul = 1) {
+        if (exp > 0) {
+            for (;;) {
+                if ((exp & 1) == 1)
+                    mul = mod.ModMul(mul, num);
+                exp >>= 1;
+                if (exp == 0)
+                    break;
+                num = mod.ModMul(num, num);
+            }
+        }
+        return mul;
+    }
+    
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <param name="mul">optional multiplicand</param>
+    /// <returns>(mul * num^exp) % mod</returns>
+    public static ulong ModPow(this ulong mod, ulong num, ulong exp, ulong mul = 1) {
+        if (exp > 0) {
+            for (;;) {
+                if ((exp & 1) == 1)
+                    mul = mod.ModMul(mul, num);
+                exp >>= 1;
+                if (exp == 0)
+                    break;
+                num = mod.ModMul(num, num);
+            }
+        }
+        return mul;
+    }
+    
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <param name="mul">optional multiplicand</param>
+    /// <returns>(mul * num^exp) % mod</returns>
+    public static long ModPow(this long mod, long num, long exp, long mul = 1) {
+        if (exp > 0) {
+            for (;;) {
+                if ((exp & 1) == 1)
+                    mul = mod.ModMul(mul, num);
+                exp >>= 1;
+                if (exp == 0)
+                    break;
+                num = mod.ModMul(num, num);
+            }
+        }
+        return mul;
+    }
+    
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <returns>(num^exp) % mod</returns>
+    public static UInt128 ModPow(this UInt128 mod, UInt128 num, UInt128 exp) => mod.ModPow(num, exp, 1);
+    
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <param name="mul">multiplicand</param>
+    /// <returns>(mul * num^exp) % mod</returns>
+    public static UInt128 ModPow(this UInt128 mod, UInt128 num, UInt128 exp, UInt128 mul) {
+        if (exp > 0) {
+            for (;;) {
+                if ((exp & 1) == 1)
+                    mul = mod.ModMul(mul, num);
+                exp >>= 1;
+                if (exp == 0)
+                    break;
+                num = mod.ModMul(num, num);
+            }
+        }
+        return mul;
+    }
+    
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <returns>(num^exp) % mod</returns>
+    public static Int128 ModPow(this Int128 mod, Int128 num, Int128 exp) => mod.ModPow(num, exp, 1);
+    
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <param name="mul">multiplicand</param>
+    /// <returns>(mul * num^exp) % mod</returns>
+    public static Int128 ModPow(this Int128 mod, Int128 num, Int128 exp, Int128 mul) {
+        if (exp > 0) {
+            for (;;) {
+                if ((exp & 1) == 1)
+                    mul = mod.ModMul(mul, num);
+                exp >>= 1;
+                if (exp == 0)
+                    break;
+                num = mod.ModMul(num, num);
+            }
+        }
+        return mul;
+    }
+    
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <returns>(num^exp) % mod</returns>
+    public static BigInteger ModPow(this BigInteger mod, BigInteger num, BigInteger exp) => mod.ModPow(num, exp, 1);
+    
+    /// <summary>
+    /// Performs a modulo exponentiation operation.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <param name="exp">exponent</param>
+    /// <param name="mul">multiplicand</param>
+    /// <returns>(mul * num^exp) % mod</returns>
+    public static BigInteger ModPow(this BigInteger mod, BigInteger num, BigInteger exp, BigInteger mul) {
+        if (exp > 0) {
+            for (;;) {
+                if ((exp & 1) == 1)
+                    mul = mod.ModMul(mul, num);
+                exp >>= 1;
+                if (exp == 0)
+                    break;
+                num = mod.ModMul(num, num);
+            }
+        }
+        return mul;
     }
 }

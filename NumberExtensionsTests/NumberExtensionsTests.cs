@@ -68,8 +68,10 @@ public class NumberExtensionsTests {
         Assert.AreEqual((uint)0xDB42DB42, ((uint)0x42DB42DB).ReverseBits());
         Assert.AreEqual(unchecked((long)0xDB42DB42DB42DB42), ((long)0x42DB42DB42DB42DB).ReverseBits());
         Assert.AreEqual((ulong)0xDB42DB42DB42DB42, ((ulong)0x42DB42DB42DB42DB).ReverseBits());
-        Assert.AreEqual(new Int128(0xDB42DB42DB42DB42, 0xDB42DB42DB42DB42), new Int128(0x42DB42DB42DB42DBUL, 0x42DB42DB42DB42DBUL).ReverseBits());
-        Assert.AreEqual(new UInt128(0xDB42DB42DB42DB42, 0xDB42DB42DB42DB42), new UInt128(0x42DB42DB42DB42DBUL, 0x42DB42DB42DB42DBUL).ReverseBits());
+        Assert.AreEqual(new Int128(0xDB42DB42DB42DB42, 0xDB42DB42DB42DB42),
+            new Int128(0x42DB42DB42DB42DBUL, 0x42DB42DB42DB42DBUL).ReverseBits());
+        Assert.AreEqual(new UInt128(0xDB42DB42DB42DB42, 0xDB42DB42DB42DB42),
+            new UInt128(0x42DB42DB42DB42DBUL, 0x42DB42DB42DB42DBUL).ReverseBits());
     }
 
     [TestMethod]
@@ -119,7 +121,7 @@ public class NumberExtensionsTests {
         Assert.IsFalse(((ulong)((1UL << 63) - 1)).IsPowerOf2());
         Assert.IsFalse((((Int128.One << 126) - 1)).IsPowerOf2());
         Assert.IsFalse((((UInt128.One << 127) - 1)).IsPowerOf2());
-        
+
         // test highest power of 2
         Assert.IsTrue(((sbyte)(1 << 6)).IsPowerOf2());
         Assert.IsTrue(((byte)(1 << 7)).IsPowerOf2());
@@ -223,7 +225,7 @@ public class NumberExtensionsTests {
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((long)0).Log2Ceiling());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => Int128.Zero.Log2Ceiling());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => UInt128.Zero.Log2Ceiling());
-        
+
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((double)0).Log2Floor());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((float)0).Log2Floor());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((Half)0).Log2Floor());
@@ -264,7 +266,7 @@ public class NumberExtensionsTests {
         Assert.AreEqual(0, ((long)1).Log2Ceiling());
         Assert.AreEqual(0, UInt128.One.Log2Ceiling());
         Assert.AreEqual(0, Int128.One.Log2Ceiling());
-        
+
         // test log2(maxvalue) and log2(epsilon) is correct
         // Note: .NET incorrectly calculates Math.Log2(double.MaxValue) as exactly 1024
         Assert.AreEqual(Math.Floor(Math.Log2(double.MaxValue)) - 1, double.MaxValue.Log2Floor());
@@ -283,10 +285,19 @@ public class NumberExtensionsTests {
         Assert.AreEqual(Math.Ceiling(Math.Log2((double)Half.Epsilon)), ((double)Half.Epsilon).Log2Ceiling());
 
         var random = new Random(0);
-        int byteCount = 0, sbyteCount = 0, ushortCount = 0, shortCount = 0, 
-            uintCount = 0, intCount = 0, ulongCount = 0, longCount = 0, 
-            int128Count = 0, uint128Count = 0,
-            doubleCount = 0, floatCount = 0, halfCount = 0;
+        int byteCount = 0,
+            sbyteCount = 0,
+            ushortCount = 0,
+            shortCount = 0,
+            uintCount = 0,
+            intCount = 0,
+            ulongCount = 0,
+            longCount = 0,
+            int128Count = 0,
+            uint128Count = 0,
+            doubleCount = 0,
+            floatCount = 0,
+            halfCount = 0;
         const int tests = 1_000_000, expectedUnsigned = 990_000, expectedSigned = 480_000;
         for (int testNumber = 0; testNumber < tests; testNumber++) {
             var byteValue = (byte)random.Next(0, 256);
@@ -297,7 +308,8 @@ public class NumberExtensionsTests {
             var intValue = (int)uintValue;
             var ulongValue = (ulong)random.Next(0, 65536) << 48 | (ulong)random.Next(0, 65536) << 32 | uintValue;
             var longValue = (long)ulongValue;
-            var int128LowValue = (ulong)random.Next(0, 65536) << 48 | (ulong)random.Next(0, 16777216) << 24 | (ulong)random.Next(0, 16777216);
+            var int128LowValue = (ulong)random.Next(0, 65536) << 48 | (ulong)random.Next(0, 16777216) << 24 |
+                                 (ulong)random.Next(0, 16777216);
             var uint128Value = new UInt128(ulongValue, int128LowValue);
             var int128Value = new Int128((ulong)longValue, int128LowValue);
             var doubleValue = BitConverter.UInt64BitsToDouble(ulongValue);
@@ -388,5 +400,33 @@ public class NumberExtensionsTests {
         Assert.IsTrue(doubleCount > expectedSigned, "number of double values tested less than expected");
         Assert.IsTrue(floatCount > expectedSigned, "number of float values tested less than expected");
         Assert.IsTrue(halfCount > expectedSigned, "number of Half values tested less than expected");
+    }
+
+    [TestMethod]
+    public void TestModMul() {
+        Assert.AreEqual((byte)3, (byte.MaxValue - 2).ModMul(byte.MaxValue - 3, byte.MaxValue - 5));
+        Assert.AreEqual((sbyte)3, (sbyte.MaxValue - 2).ModMul(sbyte.MaxValue - 3, sbyte.MaxValue - 5));
+        Assert.AreEqual((ushort)3, (ushort.MaxValue - 2).ModMul(ushort.MaxValue - 3, ushort.MaxValue - 5));
+        Assert.AreEqual((short)3, (short.MaxValue - 2).ModMul(short.MaxValue - 3, short.MaxValue - 5));
+        Assert.AreEqual((uint)3, (uint.MaxValue - 2).ModMul(uint.MaxValue - 3, uint.MaxValue - 5));
+        Assert.AreEqual((int)3, (int.MaxValue - 2).ModMul(int.MaxValue - 3, int.MaxValue - 5));
+        Assert.AreEqual((ulong)3, (ulong.MaxValue - 2).ModMul(ulong.MaxValue - 3, ulong.MaxValue - 5));
+        Assert.AreEqual((long)3, (long.MaxValue - 2).ModMul(long.MaxValue - 3, long.MaxValue - 5));
+        Assert.AreEqual((UInt128)3, (UInt128.MaxValue - 2).ModMul(UInt128.MaxValue - 3, UInt128.MaxValue - 5));
+        Assert.AreEqual((Int128)3, (Int128.MaxValue - 2).ModMul(Int128.MaxValue - 3, Int128.MaxValue - 5));
+    }
+
+    [TestMethod]
+    public void TestModPow() {
+        Assert.AreEqual((byte)1, (byte.MaxValue - 2).ModPow(byte.MaxValue - 3, byte.MaxValue - 5));
+        Assert.AreEqual((sbyte)1, (sbyte.MaxValue - 2).ModPow(sbyte.MaxValue - 3, sbyte.MaxValue - 5));
+        Assert.AreEqual((ushort)1, (ushort.MaxValue - 2).ModPow(ushort.MaxValue - 3, ushort.MaxValue - 5));
+        Assert.AreEqual((short)1, (short.MaxValue - 2).ModPow(short.MaxValue - 3, short.MaxValue - 5));
+        Assert.AreEqual((uint)1, (uint.MaxValue - 2).ModPow(uint.MaxValue - 3, uint.MaxValue - 5));
+        Assert.AreEqual((int)1, (int.MaxValue - 2).ModPow(int.MaxValue - 3, int.MaxValue - 5));
+        Assert.AreEqual((ulong)1, (ulong.MaxValue - 2).ModPow(ulong.MaxValue - 3, ulong.MaxValue - 5));
+        Assert.AreEqual((long)1, (long.MaxValue - 2).ModPow(long.MaxValue - 3, long.MaxValue - 5));
+        Assert.AreEqual((UInt128)1, (UInt128.MaxValue - 2).ModPow(UInt128.MaxValue - 3, UInt128.MaxValue - 5));
+        Assert.AreEqual((Int128)1, (Int128.MaxValue - 2).ModPow(Int128.MaxValue - 3, Int128.MaxValue - 5));
     }
 }
