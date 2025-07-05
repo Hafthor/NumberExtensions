@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
 using NumberExtensions;
 
 namespace NumberExtensionsBenchmark; 
@@ -14,16 +15,13 @@ public class NumberExtensionsBenchmark {
         ulong qw = (ulong)random.Next(0, 65536) << 48 | (ulong)random.Next(0, 65536) << 32 | dw;
         d = BitConverter.UInt64BitsToDouble(qw);
         f = BitConverter.UInt32BitsToSingle(dw);
-        if (double.IsNegative(d) || double.IsInfinity(d) || double.IsNaN(d))
-            throw new ApplicationException();
-        if (double.IsNegative(f) || double.IsInfinity(f) || double.IsNaN(f))
+        if (double.IsNegative(d) || double.IsInfinity(d) || double.IsNaN(d) ||
+            float.IsNegative(f) || float.IsInfinity(f) || float.IsNaN(f))
             throw new ApplicationException();
     }
 
-    public static void Main() {
-        BenchmarkDotNet.Running.BenchmarkRunner.Run<NumberExtensionsBenchmark>();
-    }
-    
+    public static void Main() => BenchmarkRunner.Run<NumberExtensionsBenchmark>();
+
     [Benchmark] // 0.7857 ns (3x faster)
     public int DoubleLog2Floor() => d.Log2Floor();
 

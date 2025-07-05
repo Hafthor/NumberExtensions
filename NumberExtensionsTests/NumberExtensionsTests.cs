@@ -76,7 +76,7 @@ public class NumberExtensionsTests {
 
     [TestMethod]
     public void TestIsPowerOf2() {
-        // test non powers of 2
+        // test non-powers of 2
         foreach (var v in new[] { -1, 0, 3, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15 }) {
             Assert.IsFalse(((sbyte)v).IsPowerOf2());
             Assert.IsFalse(((byte)v).IsPowerOf2());

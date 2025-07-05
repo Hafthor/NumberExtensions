@@ -4,13 +4,14 @@ namespace NumberExtensions;
 
 public static class NumberExtensions {
     // used for BitCount and ReverseBits
-    private static readonly UInt128 UINT128_MASK1 = new(0x5555555555555555UL, 0x5555555555555555UL);
-    private static readonly UInt128 UINT128_MASK2 = new(0x3333333333333333UL, 0x3333333333333333UL);
-    private static readonly UInt128 UINT128_MASK4 = new(0x0F0F0F0F0F0F0F0FUL, 0x0F0F0F0F0F0F0F0FUL);
-    private static readonly UInt128 UINT128_MASK8 = new(0x00FF00FF00FF00FFUL, 0x00FF00FF00FF00FFUL);
-    private static readonly UInt128 UINT128_MASK16 = new(0x0000FFFF0000FFFFUL, 0x0000FFFF0000FFFFUL);
-    private static readonly UInt128 UINT128_MASK32 = new(0x00000000FFFFFFFFUL, 0x00000000FFFFFFFFUL);
-    private static readonly UInt128 UINT128_MASK64 = new(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL);
+    private static readonly UInt128 
+        UINT128_MASK1 = new(0x5555555555555555UL, 0x5555555555555555UL),
+        UINT128_MASK2 = new(0x3333333333333333UL, 0x3333333333333333UL),
+        UINT128_MASK4 = new(0x0F0F0F0F0F0F0F0FUL, 0x0F0F0F0F0F0F0F0FUL),
+        UINT128_MASK8 = new(0x00FF00FF00FF00FFUL, 0x00FF00FF00FF00FFUL),
+        UINT128_MASK16 = new(0x0000FFFF0000FFFFUL, 0x0000FFFF0000FFFFUL),
+        UINT128_MASK32 = new(0x00000000FFFFFFFFUL, 0x00000000FFFFFFFFUL),
+        UINT128_MASK64 = new(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL);
     
     /// <summary>
     /// Counts the number of bits set in the value.
@@ -212,90 +213,70 @@ public static class NumberExtensions {
     /// </summary>
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
-    public static bool IsPowerOf2(this sbyte value) {
-        return value > 0 && (value & (value - 1)) == 0;
-    }
+    public static bool IsPowerOf2(this sbyte value) => value > 0 && (value & (value - 1)) == 0;
 
     /// <summary>
     /// Determines if number is a power of 2.
     /// </summary>
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
-    public static bool IsPowerOf2(this byte value) {
-        return value > 0 && (value & (value - 1)) == 0;
-    }
+    public static bool IsPowerOf2(this byte value) => value > 0 && (value & (value - 1)) == 0;
 
     /// <summary>
     /// Determines if number is a power of 2.
     /// </summary>
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
-    public static bool IsPowerOf2(this short value) {
-        return value > 0 && (value & (value - 1)) == 0;
-    }
+    public static bool IsPowerOf2(this short value) => value > 0 && (value & (value - 1)) == 0;
 
     /// <summary>
     /// Determines if number is a power of 2.
     /// </summary>
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
-    public static bool IsPowerOf2(this ushort value) {
-        return value > 0 && (value & (value - 1)) == 0;
-    }
+    public static bool IsPowerOf2(this ushort value) => value > 0 && (value & (value - 1)) == 0;
 
     /// <summary>
     /// Determines if number is a power of 2.
     /// </summary>
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
-    public static bool IsPowerOf2(this int value) {
-        return value > 0 && (value & (value - 1)) == 0;
-    }
+    public static bool IsPowerOf2(this int value) => value > 0 && (value & (value - 1)) == 0;
 
     /// <summary>
     /// Determines if number is a power of 2.
     /// </summary>
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
-    public static bool IsPowerOf2(this uint value) {
-        return value > 0 && (value & (value - 1)) == 0;
-    }
+    public static bool IsPowerOf2(this uint value) => value > 0 && (value & (value - 1)) == 0;
 
     /// <summary>
     /// Determines if number is a power of 2.
     /// </summary>
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
-    public static bool IsPowerOf2(this long value) {
-        return value > 0 && (value & (value - 1)) == 0;
-    }
+    public static bool IsPowerOf2(this long value) => value > 0 && (value & (value - 1)) == 0;
 
     /// <summary>
     /// Determines if number is a power of 2.
     /// </summary>
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
-    public static bool IsPowerOf2(this ulong value) {
-        return value > 0 && (value & (value - 1)) == 0;
-    }
+    public static bool IsPowerOf2(this ulong value) => value > 0 && (value & (value - 1)) == 0;
 
     /// <summary>
     /// Determines if number is a power of 2.
     /// </summary>
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
-    public static bool IsPowerOf2(this Int128 value) {
-        return value > 0 && (value & (value - 1)) == 0;
-    }
-    
+    public static bool IsPowerOf2(this Int128 value) => value > 0 && (value & (value - 1)) == 0;
+
     /// <summary>
     /// Determines if number is a power of 2.
     /// </summary>
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
-    public static bool IsPowerOf2(this UInt128 value) {
-        return value > 0 && (value & (value - 1)) == 0;
-    }
+    public static bool IsPowerOf2(this UInt128 value) => value > 0 && (value & (value - 1)) == 0;
 
     /// <summary>
     /// Determines if number is a power of 2.
@@ -303,8 +284,7 @@ public static class NumberExtensions {
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
     public static bool IsPowerOf2(this double value) {
-        const int MANTISSA_BITS = 52;
-        const int EXPONENT_BITS = 11;
+        const int MANTISSA_BITS = 52, EXPONENT_BITS = 11;
         long l = BitConverter.DoubleToInt64Bits(value);
         if (l <= 0) // negative or zero or -NaN or -Infinity
             return false;
@@ -327,8 +307,7 @@ public static class NumberExtensions {
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
     public static bool IsPowerOf2(this float value) {
-        const int MANTISSA_BITS = 23;
-        const int EXPONENT_BITS = 8;
+        const int MANTISSA_BITS = 23, EXPONENT_BITS = 8;
         int i = BitConverter.SingleToInt32Bits(value);
         if (i <= 0) // negative or zero or -NaN or -Infinity
             return false;
@@ -351,8 +330,7 @@ public static class NumberExtensions {
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
     public static bool IsPowerOf2(this Half value) {
-        const int MANTISSA_BITS = 10;
-        const int EXPONENT_BITS = 5;
+        const int MANTISSA_BITS = 10, EXPONENT_BITS = 5;
         short s = BitConverter.HalfToInt16Bits(value);
         if (s <= 0) // negative or zero or -NaN or -Infinity
             return false;
@@ -516,8 +494,7 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Floor(this double value) {
-        const int MANTISSA_BITS = 52;
-        const int EXPONENT_BITS = 11;
+        const int MANTISSA_BITS = 52, EXPONENT_BITS = 11;
         long l = BitConverter.DoubleToInt64Bits(value);
         if (l <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
@@ -541,8 +518,7 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Floor(this float value) {
-        const int MANTISSA_BITS = 23;
-        const int EXPONENT_BITS = 8;
+        const int MANTISSA_BITS = 23, EXPONENT_BITS = 8;
         int i = BitConverter.SingleToInt32Bits(value);
         if (i <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
@@ -566,8 +542,7 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Floor(this Half value) {
-        const int MANTISSA_BITS = 10;
-        const int EXPONENT_BITS = 5;
+        const int MANTISSA_BITS = 10, EXPONENT_BITS = 5;
         short s = BitConverter.HalfToInt16Bits(value);
         if (s <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
@@ -741,8 +716,7 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Ceiling(this double value) {
-        const int MANTISSA_BITS = 52;
-        const int EXPONENT_BITS = 11;
+        const int MANTISSA_BITS = 52, EXPONENT_BITS = 11;
         long l = BitConverter.DoubleToInt64Bits(value);
         if (l <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
@@ -766,8 +740,7 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Ceiling(this float value) {
-        const int MANTISSA_BITS = 23;
-        const int EXPONENT_BITS = 8;
+        const int MANTISSA_BITS = 23, EXPONENT_BITS = 8;
         int i = BitConverter.SingleToInt32Bits(value);
         if (i <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
@@ -791,8 +764,7 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Ceiling(this Half value) {
-        const int MANTISSA_BITS = 10;
-        const int EXPONENT_BITS = 5;
+        const int MANTISSA_BITS = 10, EXPONENT_BITS = 5;
         short s = BitConverter.HalfToInt16Bits(value);
         if (s <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
