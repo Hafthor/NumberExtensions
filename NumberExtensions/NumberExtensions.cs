@@ -911,6 +911,10 @@ public static class NumberExtensions {
     /// <param name="mul">optional multiplicand</param>
     /// <returns>(mul * num^exp) % mod</returns>
     public static sbyte ModPow(this sbyte mod, sbyte num, sbyte exp, sbyte mul = 1) {
+        if (exp < 0) {
+            num = mod.ModInverse(num);
+            exp = (sbyte)-exp;
+        }
         if (exp > 0) {
             for (;;) {
                 if ((exp & 1) == 1)
@@ -955,6 +959,10 @@ public static class NumberExtensions {
     /// <param name="mul">optional multiplicand</param>
     /// <returns>(mul * num^exp) % mod</returns>
     public static short ModPow(this short mod, short num, short exp, short mul = 1) {
+        if (exp < 0) {
+            num = mod.ModInverse(num);
+            exp = (short)-exp;
+        }
         if (exp > 0) {
             for (;;) {
                 if ((exp & 1) == 1)
@@ -999,6 +1007,10 @@ public static class NumberExtensions {
     /// <param name="mul">optional multiplicand</param>
     /// <returns>(mul * num^exp) % mod</returns>
     public static int ModPow(this int mod, int num, int exp, int mul = 1) {
+        if (exp < 0) {
+            num = mod.ModInverse(num);
+            exp = -exp;
+        }
         if (exp > 0) {
             for (;;) {
                 if ((exp & 1) == 1)
@@ -1043,6 +1055,10 @@ public static class NumberExtensions {
     /// <param name="mul">optional multiplicand</param>
     /// <returns>(mul * num^exp) % mod</returns>
     public static long ModPow(this long mod, long num, long exp, long mul = 1) {
+        if (exp < 0) {
+            num = mod.ModInverse(num);
+            exp = -exp;
+        }
         if (exp > 0) {
             for (;;) {
                 if ((exp & 1) == 1)
@@ -1105,6 +1121,10 @@ public static class NumberExtensions {
     /// <param name="mul">multiplicand</param>
     /// <returns>(mul * num^exp) % mod</returns>
     public static Int128 ModPow(this Int128 mod, Int128 num, Int128 exp, Int128 mul) {
+        if (exp < 0) {
+            num = mod.ModInverse(num);
+            exp = -exp;
+        }
         if (exp > 0) {
             for (;;) {
                 if ((exp & 1) == 1)
@@ -1136,6 +1156,10 @@ public static class NumberExtensions {
     /// <param name="mul">multiplicand</param>
     /// <returns>(mul * num^exp) % mod</returns>
     public static BigInteger ModPow(this BigInteger mod, BigInteger num, BigInteger exp, BigInteger mul) {
+        if (exp < 0) {
+            num = mod.ModInverse(num);
+            exp = (sbyte)-exp;
+        }
         if (exp > 0) {
             for (;;) {
                 if ((exp & 1) == 1)
@@ -1147,5 +1171,125 @@ public static class NumberExtensions {
             }
         }
         return mul;
+    }
+
+    /// <summary>
+    /// Calculates the modular multiplicative inverse.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <returns>modular multiplicative inverse</returns>
+    /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
+    public static sbyte ModInverse(this sbyte mod, sbyte num) {
+        sbyte t = 0, newT = 1;
+        sbyte r = mod, newR = num;
+        while (newR != 0) {
+            sbyte quotient = (sbyte)(r / newR);
+            (t, newT) = (newT, (sbyte)(t - quotient * newT));
+            (r, newR) = (newR, (sbyte)(r - quotient * newR));
+        }
+        if (r > 1) throw new ArgumentException("No inverse exists");
+        if (t < 0) t += mod;
+        return t;
+    }
+    
+    /// <summary>
+    /// Calculates the modular multiplicative inverse.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <returns>modular multiplicative inverse</returns>
+    /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
+    public static short ModInverse(this short mod, short num) {
+        short t = 0, newT = 1;
+        short r = mod, newR = num;
+        while (newR != 0) {
+            short quotient = (short)(r / newR);
+            (t, newT) = (newT, (short)(t - quotient * newT));
+            (r, newR) = (newR, (short)(r - quotient * newR));
+        }
+        if (r > 1) throw new ArgumentException("No inverse exists");
+        if (t < 0) t += mod;
+        return t;
+    }
+    
+    /// <summary>
+    /// Calculates the modular multiplicative inverse.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <returns>modular multiplicative inverse</returns>
+    /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
+    public static int ModInverse(this int mod, int num) {
+        int t = 0, newT = 1;
+        int r = mod, newR = num;
+        while (newR != 0) {
+            int quotient = r / newR;
+            (t, newT) = (newT, t - quotient * newT);
+            (r, newR) = (newR, r - quotient * newR);
+        }
+        if (r > 1) throw new ArgumentException("No inverse exists");
+        if (t < 0) t += mod;
+        return t;
+    }
+    
+    /// <summary>
+    /// Calculates the modular multiplicative inverse.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <returns>modular multiplicative inverse</returns>
+    /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
+    public static long ModInverse(this long mod, long num) {
+        long t = 0, newT = 1;
+        long r = mod, newR = num;
+        while (newR != 0) {
+            long quotient = r / newR;
+            (t, newT) = (newT, t - quotient * newT);
+            (r, newR) = (newR, r - quotient * newR);
+        }
+        if (r > 1) throw new ArgumentException("No inverse exists");
+        if (t < 0) t += mod;
+        return t;
+    }
+    
+    /// <summary>
+    /// Calculates the modular multiplicative inverse.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <returns>modular multiplicative inverse</returns>
+    /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
+    public static Int128 ModInverse(this Int128 mod, Int128 num) {
+        Int128 t = 0, newT = 1;
+        Int128 r = mod, newR = num;
+        while (newR != 0) {
+            Int128 quotient = r / newR;
+            (t, newT) = (newT, t - quotient * newT);
+            (r, newR) = (newR, r - quotient * newR);
+        }
+        if (r > 1) throw new ArgumentException("No inverse exists");
+        if (t < 0) t += mod;
+        return t;
+    }
+    
+    /// <summary>
+    /// Calculates the modular multiplicative inverse.
+    /// </summary>
+    /// <param name="mod">modulo</param>
+    /// <param name="num">base number</param>
+    /// <returns>modular multiplicative inverse</returns>
+    /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
+    public static BigInteger ModInverse(this BigInteger mod, BigInteger num) {
+        BigInteger t = 0, newT = 1;
+        BigInteger r = mod, newR = num;
+        while (newR != 0) {
+            BigInteger quotient = r / newR;
+            (t, newT) = (newT, t - quotient * newT);
+            (r, newR) = (newR, r - quotient * newR);
+        }
+        if (r > 1) throw new ArgumentException("No inverse exists");
+        if (t < 0) t += mod;
+        return t;
     }
 }
