@@ -1,3 +1,4 @@
+using System.Numerics;
 using NumberExtensions;
 
 namespace NumberExtensionsTests;
@@ -406,9 +407,9 @@ public class NumberExtensionsTests {
 
     [TestMethod]
     public void TestModMul() {
-        Assert.AreEqual((byte)3, (byte.MaxValue - 2).ModMul(byte.MaxValue - 3, byte.MaxValue - 5));
+        Assert.AreEqual((byte)3, ((byte)(byte.MaxValue - 2)).ModMul(byte.MaxValue - 3, byte.MaxValue - 5));
         Assert.AreEqual((sbyte)3, (sbyte.MaxValue - 2).ModMul(sbyte.MaxValue - 3, sbyte.MaxValue - 5));
-        Assert.AreEqual((ushort)3, (ushort.MaxValue - 2).ModMul(ushort.MaxValue - 3, ushort.MaxValue - 5));
+        Assert.AreEqual((ushort)3, ((ushort)(ushort.MaxValue - 2)).ModMul(ushort.MaxValue - 3, ushort.MaxValue - 5));
         Assert.AreEqual((short)3, (short.MaxValue - 2).ModMul(short.MaxValue - 3, short.MaxValue - 5));
         Assert.AreEqual((uint)3, (uint.MaxValue - 2).ModMul(uint.MaxValue - 3, uint.MaxValue - 5));
         Assert.AreEqual((int)3, (int.MaxValue - 2).ModMul(int.MaxValue - 3, int.MaxValue - 5));
@@ -416,13 +417,14 @@ public class NumberExtensionsTests {
         Assert.AreEqual((long)3, (long.MaxValue - 2).ModMul(long.MaxValue - 3, long.MaxValue - 5));
         Assert.AreEqual((UInt128)3, (UInt128.MaxValue - 2).ModMul(UInt128.MaxValue - 3, UInt128.MaxValue - 5));
         Assert.AreEqual((Int128)3, (Int128.MaxValue - 2).ModMul(Int128.MaxValue - 3, Int128.MaxValue - 5));
+        Assert.AreEqual((BigInteger)3, ((BigInteger)(Int128.MaxValue - 2)).ModMul(Int128.MaxValue - 3, Int128.MaxValue - 5));
     }
 
     [TestMethod]
     public void TestModPow() {
-        Assert.AreEqual((byte)1, (byte.MaxValue - 2).ModPow(byte.MaxValue - 3, byte.MaxValue - 5));
+        Assert.AreEqual((byte)1, ((byte)(byte.MaxValue - 2)).ModPow(byte.MaxValue - 3, byte.MaxValue - 5));
         Assert.AreEqual((sbyte)1, (sbyte.MaxValue - 2).ModPow(sbyte.MaxValue - 3, sbyte.MaxValue - 5));
-        Assert.AreEqual((ushort)1, (ushort.MaxValue - 2).ModPow(ushort.MaxValue - 3, ushort.MaxValue - 5));
+        Assert.AreEqual((ushort)1, ((ushort)(ushort.MaxValue - 2)).ModPow(ushort.MaxValue - 3, ushort.MaxValue - 5));
         Assert.AreEqual((short)1, (short.MaxValue - 2).ModPow(short.MaxValue - 3, short.MaxValue - 5));
         Assert.AreEqual((uint)1, (uint.MaxValue - 2).ModPow(uint.MaxValue - 3, uint.MaxValue - 5));
         Assert.AreEqual((int)1, (int.MaxValue - 2).ModPow(int.MaxValue - 3, int.MaxValue - 5));
@@ -430,6 +432,7 @@ public class NumberExtensionsTests {
         Assert.AreEqual((long)1, (long.MaxValue - 2).ModPow(long.MaxValue - 3, long.MaxValue - 5));
         Assert.AreEqual((UInt128)1, (UInt128.MaxValue - 2).ModPow(UInt128.MaxValue - 3, UInt128.MaxValue - 5));
         Assert.AreEqual((Int128)1, (Int128.MaxValue - 2).ModPow(Int128.MaxValue - 3, Int128.MaxValue - 5));
+        Assert.AreEqual(BigInteger.One, ((BigInteger)(Int128.MaxValue - 2)).ModPow(Int128.MaxValue - 3, Int128.MaxValue - 5));
         
         // Test with negative exponent
         Assert.AreEqual((sbyte)6, ((sbyte)13).ModPow(7, -17));
@@ -437,6 +440,7 @@ public class NumberExtensionsTests {
         Assert.AreEqual((int)6, ((int)13).ModPow(7, -17));
         Assert.AreEqual((long)6, ((long)13).ModPow(7, -17));
         Assert.AreEqual((Int128)6, ((Int128)13).ModPow(7, -17));
+        Assert.AreEqual((BigInteger)6, ((BigInteger)13).ModPow(7, -17));
     }
 
     [TestMethod]
@@ -446,17 +450,20 @@ public class NumberExtensionsTests {
         Assert.AreEqual((int)2, ((int)13).ModInverse(7));
         Assert.AreEqual((long)2, ((long)13).ModInverse(7));
         Assert.AreEqual((Int128)2, ((Int128)13).ModInverse(7));
+        Assert.AreEqual((BigInteger)2, ((BigInteger)13).ModInverse(7));
         
         Assert.AreEqual((sbyte)25, ((sbyte)29).ModInverse(7));
         Assert.AreEqual((short)25, ((short)29).ModInverse(7));
         Assert.AreEqual((int)25, ((int)29).ModInverse(7));
         Assert.AreEqual((long)25, ((long)29).ModInverse(7));
         Assert.AreEqual((Int128)25, ((Int128)29).ModInverse(7));
+        Assert.AreEqual((BigInteger)25, ((BigInteger)29).ModInverse(7));
         
         Assert.ThrowsException<ArgumentException>(() => ((sbyte)2).ModInverse(0));
         Assert.ThrowsException<ArgumentException>(() => ((short)2).ModInverse(0));
         Assert.ThrowsException<ArgumentException>(() => ((int)2).ModInverse(0));
         Assert.ThrowsException<ArgumentException>(() => ((long)2).ModInverse(0));
         Assert.ThrowsException<ArgumentException>(() => ((Int128)2).ModInverse(0));
+        Assert.ThrowsException<ArgumentException>(() => ((BigInteger)2).ModInverse(0));
     }
 }
