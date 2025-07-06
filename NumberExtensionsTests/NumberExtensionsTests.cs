@@ -215,6 +215,8 @@ public class NumberExtensionsTests {
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((int)0).Log2Floor());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((ulong)0).Log2Floor());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((long)0).Log2Floor());
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Int128.Zero.Log2Floor());
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => UInt128.Zero.Log2Floor());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((byte)0).Log2Ceiling());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((sbyte)0).Log2Ceiling());
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((ushort)0).Log2Ceiling());
