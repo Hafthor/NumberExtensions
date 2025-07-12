@@ -1182,10 +1182,10 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
     public static sbyte ModInverse(this sbyte mod, sbyte num) {
         sbyte t = 0, r = mod;
-        for (sbyte tPrime = 1, rPrime = (sbyte)(num % mod); rPrime != 0; ) {
-            sbyte quotient = (sbyte)(r / rPrime);
-            (r, rPrime) = (rPrime, (sbyte)(r - quotient * rPrime));
-            (t, tPrime) = (tPrime, (sbyte)(t - quotient * tPrime));
+        for (sbyte tNext = 1, rNext = (sbyte)(num % mod); rNext != 0; ) {
+            sbyte quotient = (sbyte)(r / rNext);
+            (r, rNext) = (rNext, (sbyte)(r - quotient * rNext));
+            (t, tNext) = (tNext, (sbyte)(t - quotient * tNext));
         }
         if (r > 1) throw new ArgumentException("No inverse exists");
         if (t < 0) t += mod;
@@ -1201,10 +1201,10 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
     public static short ModInverse(this short mod, short num) {
         short t = 0, r = mod;
-        for (short tPrime = 1, rPrime = (short)(num % mod); rPrime != 0; ) {
-            short quotient = (short)(r / rPrime);
-            (r, rPrime) = (rPrime, (short)(r - quotient * rPrime));
-            (t, tPrime) = (tPrime, (short)(t - quotient * tPrime));
+        for (short tNext = 1, rNext = (short)(num % mod); rNext != 0; ) {
+            short quotient = (short)(r / rNext);
+            (r, rNext) = (rNext, (short)(r - quotient * rNext));
+            (t, tNext) = (tNext, (short)(t - quotient * tNext));
         }
         if (r > 1) throw new ArgumentException("No inverse exists");
         if (t < 0) t += mod;
@@ -1220,10 +1220,10 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
     public static int ModInverse(this int mod, int num) {
         int t = 0, r = mod;
-        for (int tPrime = 1, rPrime = num % mod; rPrime != 0;) {
-            int quotient = r / rPrime;
-            (r, rPrime) = (rPrime, r - quotient * rPrime);
-            (t, tPrime) = (tPrime, t - quotient * tPrime);
+        for (int tNext = 1, rNext = num % mod; rNext != 0;) {
+            int quotient = r / rNext;
+            (r, rNext) = (rNext, r - quotient * rNext);
+            (t, tNext) = (tNext, t - quotient * tNext);
         }
         if (r > 1) throw new ArgumentException("No inverse exists");
         if (t < 0) t += mod;
@@ -1239,10 +1239,10 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
     public static long ModInverse(this long mod, long num) {
         long t = 0, r = mod;
-        for (long tPrime = 1, rPrime = num % mod; rPrime != 0;) {
-            long quotient = r / rPrime;
-            (r, rPrime) = (rPrime, r - quotient * rPrime);
-            (t, tPrime) = (tPrime, t - quotient * tPrime);
+        for (long tNext = 1, rNext = num % mod; rNext != 0;) {
+            long quotient = r / rNext;
+            (r, rNext) = (rNext, r - quotient * rNext);
+            (t, tNext) = (tNext, t - quotient * tNext);
         }
         if (r > 1) throw new ArgumentException("No inverse exists");
         if (t < 0) t += mod;
@@ -1258,10 +1258,10 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
     public static Int128 ModInverse(this Int128 mod, Int128 num) {
         Int128 t = 0, r = mod;
-        for (Int128 tPrime = 1, rPrime = num % mod; rPrime != 0;) {
-            Int128 quotient = r / rPrime;
-            (r, rPrime) = (rPrime, r - quotient * rPrime);
-            (t, tPrime) = (tPrime, t - quotient * tPrime);
+        for (Int128 tNext = 1, rNext = num % mod; rNext != 0;) {
+            Int128 quotient = r / rNext;
+            (r, rNext) = (rNext, r - quotient * rNext);
+            (t, tNext) = (tNext, t - quotient * tNext);
         }
         if (r > 1) throw new ArgumentException("No inverse exists");
         if (t < 0) t += mod;
@@ -1277,10 +1277,10 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
     public static BigInteger ModInverse(this BigInteger mod, BigInteger num) {
         BigInteger t = BigInteger.Zero, r = mod;
-        for (BigInteger tPrime = BigInteger.One, rPrime = num % mod; rPrime != 0;) {
-            BigInteger quotient = r / rPrime;
-            (r, rPrime) = (rPrime, r - quotient * rPrime);
-            (t, tPrime) = (tPrime, t - quotient * tPrime);
+        for (BigInteger tNext = BigInteger.One, rNext = num % mod; rNext != 0;) {
+            BigInteger quotient = r / rNext;
+            (r, rNext) = (rNext, r - quotient * rNext);
+            (t, tNext) = (tNext, t - quotient * tNext);
         }
         if (r > 1) throw new ArgumentException("No inverse exists");
         if (t < 0) t += mod;
