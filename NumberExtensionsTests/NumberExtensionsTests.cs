@@ -466,4 +466,14 @@ public class NumberExtensionsTests {
         Assert.ThrowsException<ArgumentException>(() => ((Int128)2).ModInverse(0));
         Assert.ThrowsException<ArgumentException>(() => ((BigInteger)2).ModInverse(0));
     }
+
+    [TestMethod]
+    public void TestMinMax() {
+        Assert.AreEqual(1, 3.Min(1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 9));
+        Assert.AreEqual(9, 3.Max(1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 9));
+        Assert.AreEqual("five", "three".Min("one", "four", "one", "five", "nine"));
+        Assert.AreEqual("three", "three".Max("one", "four", "one", "five", "nine"));
+        Assert.AreEqual(("five", "four"), "three".Min2("one", "four", "one", "five", "nine"));
+        Assert.AreEqual(("three", "one"), "three".Max2("one", "four", "one", "five", "nine"));
+    }
 }

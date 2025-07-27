@@ -4,7 +4,7 @@ namespace NumberExtensions;
 
 public static class NumberExtensions {
     // used for BitCount and ReverseBits
-    private static readonly UInt128 
+    private static readonly UInt128
         UINT128_MASK1 = new(0x5555555555555555UL, 0x5555555555555555UL),
         UINT128_MASK2 = new(0x3333333333333333UL, 0x3333333333333333UL),
         UINT128_MASK4 = new(0x0F0F0F0F0F0F0F0FUL, 0x0F0F0F0F0F0F0F0FUL),
@@ -12,7 +12,7 @@ public static class NumberExtensions {
         UINT128_MASK16 = new(0x0000FFFF0000FFFFUL, 0x0000FFFF0000FFFFUL),
         UINT128_MASK32 = new(0x00000000FFFFFFFFUL, 0x00000000FFFFFFFFUL),
         UINT128_MASK64 = new(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL);
-    
+
     /// <summary>
     /// Counts the number of bits set in the value.
     /// </summary>
@@ -107,7 +107,7 @@ public static class NumberExtensions {
         value = (value & UINT128_MASK32) + ((value >> 32) & UINT128_MASK32);
         return (int)((value & UINT128_MASK64) + (value >> 64));
     }
-    
+
     /// <summary>
     /// Reverse the bits in the value.
     /// </summary>
@@ -144,7 +144,7 @@ public static class NumberExtensions {
         value = (ushort)(((value >> 4) & 0x0F0F) | ((value & 0x0F0F) << 4));
         return (ushort)((value >> 8) | (value << 8));
     }
-    
+
     /// <summary>
     /// Reverse the bits in the value.
     /// </summary>
@@ -164,7 +164,7 @@ public static class NumberExtensions {
         value = (uint)(((value >> 8) & 0x00FF00FF) | ((value & 0x00FF00FF) << 8));
         return (value >> 16) | (value << 16);
     }
-    
+
     /// <summary>
     /// Reverse the bits in the value.
     /// </summary>
@@ -192,7 +192,7 @@ public static class NumberExtensions {
     /// <param name="value">value to reverse bits of</param>
     /// <returns>value with bits reversed</returns>
     public static Int128 ReverseBits(this Int128 value) => (Int128)ReverseBits((UInt128)value);
-    
+
     /// <summary>
     /// Reverse the bits in the value.
     /// </summary>
@@ -444,7 +444,7 @@ public static class NumberExtensions {
                 return log;
         throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
     }
-    
+
     /// <summary>
     /// Calculates the integer portion of the base 2 logarithm of the value.
     /// </summary>
@@ -472,7 +472,7 @@ public static class NumberExtensions {
                 return log;
         throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
     }
-    
+
     /// <summary>
     /// Calculates the integer portion of the base 2 logarithm of the value.
     /// </summary>
@@ -486,7 +486,7 @@ public static class NumberExtensions {
                 return log;
         throw new ArgumentOutOfRangeException(nameof(value), "value must be non-zero");
     }
-    
+
     /// <summary>
     /// Calculates the integer portion of the base 2 logarithm of the value.
     /// </summary>
@@ -789,7 +789,7 @@ public static class NumberExtensions {
     /// <param name="b">multiplicand</param>
     /// <returns>ab % mod</returns>
     public static byte ModMul(this byte mod, byte a, byte b) => (byte)((uint)a * b % mod);
-    
+
     /// <summary>
     /// Performs a modulo multiplication operation.
     /// </summary>
@@ -798,7 +798,7 @@ public static class NumberExtensions {
     /// <param name="b">multiplicand</param>
     /// <returns>ab % mod</returns>
     public static sbyte ModMul(this sbyte mod, sbyte a, sbyte b) => (sbyte)((int)a * b % mod);
-    
+
     /// <summary>
     /// Performs a modulo multiplication operation.
     /// </summary>
@@ -807,7 +807,7 @@ public static class NumberExtensions {
     /// <param name="b">multiplicand</param>
     /// <returns>ab % mod</returns>
     public static ushort ModMul(this ushort mod, ushort a, ushort b) => (ushort)((uint)a * b % mod);
-    
+
     /// <summary>
     /// Performs a modulo multiplication operation.
     /// </summary>
@@ -816,7 +816,7 @@ public static class NumberExtensions {
     /// <param name="b">multiplicand</param>
     /// <returns>ab % mod</returns>
     public static short ModMul(this short mod, short a, short b) => (short)((int)a * b % mod);
-    
+
     /// <summary>
     /// Performs a modulo multiplication operation.
     /// </summary>
@@ -825,7 +825,7 @@ public static class NumberExtensions {
     /// <param name="b">multiplicand</param>
     /// <returns>ab % mod</returns>
     public static uint ModMul(this uint mod, uint a, uint b) => (uint)((ulong)a * b % mod);
-    
+
     /// <summary>
     /// Performs a modulo multiplication operation.
     /// </summary>
@@ -834,7 +834,7 @@ public static class NumberExtensions {
     /// <param name="b">multiplicand</param>
     /// <returns>ab % mod</returns>
     public static int ModMul(this int mod, int a, int b) => (int)((long)a * b % mod);
-    
+
     /// <summary>
     /// Performs a modulo multiplication operation.
     /// </summary>
@@ -843,7 +843,7 @@ public static class NumberExtensions {
     /// <param name="b">multiplicand</param>
     /// <returns>ab % mod</returns>
     public static ulong ModMul(this ulong mod, ulong a, ulong b) => (ulong)((UInt128)a * b % mod);
-    
+
     /// <summary>
     /// Performs a modulo multiplication operation.
     /// </summary>
@@ -852,7 +852,7 @@ public static class NumberExtensions {
     /// <param name="b">multiplicand</param>
     /// <returns>ab % mod</returns>
     public static long ModMul(this long mod, long a, long b) => (long)((Int128)a * b % mod);
-    
+
     /// <summary>
     /// Performs a modulo multiplication operation.
     /// </summary>
@@ -861,7 +861,7 @@ public static class NumberExtensions {
     /// <param name="b">multiplicand</param>
     /// <returns>ab % mod</returns>
     public static UInt128 ModMul(this UInt128 mod, UInt128 a, UInt128 b) => (UInt128)((BigInteger)a * b % mod);
-    
+
     /// <summary>
     /// Performs a modulo multiplication operation.
     /// </summary>
@@ -870,7 +870,7 @@ public static class NumberExtensions {
     /// <param name="b">multiplicand</param>
     /// <returns>ab % mod</returns>
     public static Int128 ModMul(this Int128 mod, Int128 a, Int128 b) => (Int128)((BigInteger)a * b % mod);
-    
+
     /// <summary>
     /// Performs a modulo multiplication operation.
     /// </summary>
@@ -901,7 +901,7 @@ public static class NumberExtensions {
         }
         return mul;
     }
-    
+
     /// <summary>
     /// Performs a modulo exponentiation operation.
     /// </summary>
@@ -927,7 +927,7 @@ public static class NumberExtensions {
         }
         return mul;
     }
-    
+
     /// <summary>
     /// Performs a modulo exponentiation operation.
     /// </summary>
@@ -949,7 +949,7 @@ public static class NumberExtensions {
         }
         return mul;
     }
-    
+
     /// <summary>
     /// Performs a modulo exponentiation operation.
     /// </summary>
@@ -975,7 +975,7 @@ public static class NumberExtensions {
         }
         return mul;
     }
-    
+
     /// <summary>
     /// Performs a modulo exponentiation operation.
     /// </summary>
@@ -997,7 +997,7 @@ public static class NumberExtensions {
         }
         return mul;
     }
-    
+
     /// <summary>
     /// Performs a modulo exponentiation operation.
     /// </summary>
@@ -1023,7 +1023,7 @@ public static class NumberExtensions {
         }
         return mul;
     }
-    
+
     /// <summary>
     /// Performs a modulo exponentiation operation.
     /// </summary>
@@ -1045,7 +1045,7 @@ public static class NumberExtensions {
         }
         return mul;
     }
-    
+
     /// <summary>
     /// Performs a modulo exponentiation operation.
     /// </summary>
@@ -1071,7 +1071,7 @@ public static class NumberExtensions {
         }
         return mul;
     }
-    
+
     /// <summary>
     /// Performs a modulo exponentiation operation.
     /// </summary>
@@ -1080,7 +1080,7 @@ public static class NumberExtensions {
     /// <param name="exp">exponent</param>
     /// <returns>(num^exp) % mod</returns>
     public static UInt128 ModPow(this UInt128 mod, UInt128 num, UInt128 exp) => mod.ModPow(num, exp, 1);
-    
+
     /// <summary>
     /// Performs a modulo exponentiation operation.
     /// </summary>
@@ -1102,7 +1102,7 @@ public static class NumberExtensions {
         }
         return mul;
     }
-    
+
     /// <summary>
     /// Performs a modulo exponentiation operation.
     /// </summary>
@@ -1111,7 +1111,7 @@ public static class NumberExtensions {
     /// <param name="exp">exponent</param>
     /// <returns>(num^exp) % mod</returns>
     public static Int128 ModPow(this Int128 mod, Int128 num, Int128 exp) => mod.ModPow(num, exp, 1);
-    
+
     /// <summary>
     /// Performs a modulo exponentiation operation.
     /// </summary>
@@ -1137,7 +1137,7 @@ public static class NumberExtensions {
         }
         return mul;
     }
-    
+
     /// <summary>
     /// Performs a modulo exponentiation operation.
     /// </summary>
@@ -1146,7 +1146,7 @@ public static class NumberExtensions {
     /// <param name="exp">exponent</param>
     /// <returns>(num^exp) % mod</returns>
     public static BigInteger ModPow(this BigInteger mod, BigInteger num, BigInteger exp) => mod.ModPow(num, exp, 1);
-    
+
     /// <summary>
     /// Performs a modulo exponentiation operation.
     /// </summary>
@@ -1182,7 +1182,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
     public static sbyte ModInverse(this sbyte mod, sbyte num) {
         sbyte t = 0, r = mod;
-        for (sbyte tNext = 1, rNext = (sbyte)(num % mod); rNext != 0; ) {
+        for (sbyte tNext = 1, rNext = (sbyte)(num % mod); rNext != 0;) {
             sbyte quotient = (sbyte)(r / rNext);
             (r, rNext) = (rNext, (sbyte)(r - quotient * rNext));
             (t, tNext) = (tNext, (sbyte)(t - quotient * tNext));
@@ -1191,7 +1191,7 @@ public static class NumberExtensions {
         if (t < 0) t += mod;
         return t;
     }
-    
+
     /// <summary>
     /// Calculates the modular multiplicative inverse.
     /// </summary>
@@ -1201,7 +1201,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentException">If modular multiplicative inverse cannot be determined.</exception>
     public static short ModInverse(this short mod, short num) {
         short t = 0, r = mod;
-        for (short tNext = 1, rNext = (short)(num % mod); rNext != 0; ) {
+        for (short tNext = 1, rNext = (short)(num % mod); rNext != 0;) {
             short quotient = (short)(r / rNext);
             (r, rNext) = (rNext, (short)(r - quotient * rNext));
             (t, tNext) = (tNext, (short)(t - quotient * tNext));
@@ -1210,7 +1210,7 @@ public static class NumberExtensions {
         if (t < 0) t += mod;
         return t;
     }
-    
+
     /// <summary>
     /// Calculates the modular multiplicative inverse.
     /// </summary>
@@ -1229,7 +1229,7 @@ public static class NumberExtensions {
         if (t < 0) t += mod;
         return t;
     }
-    
+
     /// <summary>
     /// Calculates the modular multiplicative inverse.
     /// </summary>
@@ -1248,7 +1248,7 @@ public static class NumberExtensions {
         if (t < 0) t += mod;
         return t;
     }
-    
+
     /// <summary>
     /// Calculates the modular multiplicative inverse.
     /// </summary>
@@ -1267,7 +1267,7 @@ public static class NumberExtensions {
         if (t < 0) t += mod;
         return t;
     }
-    
+
     /// <summary>
     /// Calculates the modular multiplicative inverse.
     /// </summary>
@@ -1285,5 +1285,69 @@ public static class NumberExtensions {
         if (r > 1) throw new ArgumentException("No inverse exists");
         if (t < 0) t += mod;
         return t;
+    }
+
+    /// <summary>
+    /// Returns the minimum of provided values.
+    /// </summary>
+    /// <param name="a">first value</param>
+    /// <param name="rest">the remaining values</param>
+    /// <typeparam name="T">value type</typeparam>
+    /// <returns>value that compares as the minimum of the values provided</returns>
+    public static T Min<T>(this T a, params T[] rest) where T : IComparable {
+        foreach (var b in rest)
+            if (b.CompareTo(a) < 0)
+                a = b;
+        return a;
+    }
+
+    /// <summary>
+    /// Returns the maximum of provided values.
+    /// </summary>
+    /// <param name="a">first value</param>
+    /// <param name="rest">the remaining values</param>
+    /// <typeparam name="T">value type</typeparam>
+    /// <returns>value that compares as the maximum of the values provided</returns>
+    public static T Max<T>(this T a, params T[] rest) where T : IComparable {
+        foreach (var b in rest)
+            if (b.CompareTo(a) > 0)
+                a = b;
+        return a;
+    }
+
+    /// <summary>
+    /// Returns the two minimums of provided values.
+    /// </summary>
+    /// <param name="a">first value</param>
+    /// <param name="b">second value</param>
+    /// <param name="rest">the remaining values</param>
+    /// <typeparam name="T">value type</typeparam>
+    /// <returns>two values that compare as the minimums of the values provided</returns>
+    public static (T min, T min2) Min2<T>(this T a, T b, params T[] rest) where T : IComparable {
+        if (b.CompareTo(a) < 0) (a, b) = (b, a);
+        foreach (var c in rest)
+            if (c.CompareTo(a) < 0)
+                (a, b) = (c, a);
+            else if (c.CompareTo(b) < 0)
+                b = c;
+        return (a, b);
+    }
+
+    /// <summary>
+    /// Returns the two maximums of provided values.
+    /// </summary>
+    /// <param name="a">first value</param>
+    /// <param name="b">second value</param>
+    /// <param name="rest">the remaining values</param>
+    /// <typeparam name="T">value type</typeparam>
+    /// <returns>two values that compare as the maximums of the values provided</returns>
+    public static (T max, T max2) Max2<T>(this T a, T b, params T[] rest) where T : IComparable {
+        if (b.CompareTo(a) > 0) (a, b) = (b, a);
+        foreach (var c in rest)
+            if (c.CompareTo(a) > 0)
+                (a, b) = (c, a);
+            else if (c.CompareTo(b) > 0)
+                b = c;
+        return (a, b);
     }
 }
