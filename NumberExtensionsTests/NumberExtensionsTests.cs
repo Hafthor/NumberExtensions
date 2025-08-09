@@ -433,7 +433,7 @@ public class NumberExtensionsTests {
         Assert.AreEqual((UInt128)1, (UInt128.MaxValue - 2).ModPow(UInt128.MaxValue - 3, UInt128.MaxValue - 5));
         Assert.AreEqual((Int128)1, (Int128.MaxValue - 2).ModPow(Int128.MaxValue - 3, Int128.MaxValue - 5));
         Assert.AreEqual(BigInteger.One, ((BigInteger)(Int128.MaxValue - 2)).ModPow(Int128.MaxValue - 3, Int128.MaxValue - 5));
-        
+
         // Test with negative exponent
         Assert.AreEqual((sbyte)6, ((sbyte)13).ModPow(7, -17));
         Assert.AreEqual((short)6, ((short)13).ModPow(7, -17));
@@ -451,14 +451,14 @@ public class NumberExtensionsTests {
         Assert.AreEqual((long)2, ((long)13).ModInverse(7));
         Assert.AreEqual((Int128)2, ((Int128)13).ModInverse(7));
         Assert.AreEqual((BigInteger)2, ((BigInteger)13).ModInverse(7));
-        
+
         Assert.AreEqual((sbyte)25, ((sbyte)29).ModInverse(7));
         Assert.AreEqual((short)25, ((short)29).ModInverse(7));
         Assert.AreEqual((int)25, ((int)29).ModInverse(7));
         Assert.AreEqual((long)25, ((long)29).ModInverse(7));
         Assert.AreEqual((Int128)25, ((Int128)29).ModInverse(7));
         Assert.AreEqual((BigInteger)25, ((BigInteger)29).ModInverse(7));
-        
+
         Assert.ThrowsExactly<ArgumentException>(() => ((sbyte)2).ModInverse(0));
         Assert.ThrowsExactly<ArgumentException>(() => ((short)2).ModInverse(0));
         Assert.ThrowsExactly<ArgumentException>(() => ((int)2).ModInverse(0));
