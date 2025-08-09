@@ -257,7 +257,7 @@ public static class NumberExtensions {
 
         var mantissa = i & ((1 << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return mantissa > 0 && (mantissa & (mantissa - 1)) == 0;
+            return mantissa != 0 && (mantissa & (mantissa - 1)) == 0;
 
         // there is an implied 1 prefix on the mantissa normally
         return mantissa == 0;
@@ -280,7 +280,7 @@ public static class NumberExtensions {
 
         var mantissa = s & ((1 << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return mantissa > 0 && (mantissa & (mantissa - 1)) == 0;
+            return mantissa != 0 && (mantissa & (mantissa - 1)) == 0;
 
         // there is an implied 1 prefix on the mantissa normally
         return mantissa == 0;
@@ -383,7 +383,7 @@ public static class NumberExtensions {
     public static int Log2Floor(this Int128 value) {
         if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
         ulong highBits = (ulong)(value >> 64);
-        return highBits > 0 ? 127 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 63 - BitOperations.LeadingZeroCount((ulong)value);
+        return highBits != 0 ? 127 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 63 - BitOperations.LeadingZeroCount((ulong)value);
     }
 
     /// <summary>
@@ -395,7 +395,7 @@ public static class NumberExtensions {
     public static int Log2Floor(this UInt128 value) {
         if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
         ulong highBits = (ulong)(value >> 64);
-        return highBits > 0 ? 127 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 63 - BitOperations.LeadingZeroCount((ulong)value);
+        return highBits != 0 ? 127 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 63 - BitOperations.LeadingZeroCount((ulong)value);
     }
 
     /// <summary>
@@ -567,7 +567,7 @@ public static class NumberExtensions {
     public static int Log2Ceiling(this Int128 value) {
         if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
         ulong highBits = (ulong)(--value >> 64);
-        return highBits > 0 ? 128 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 64 - BitOperations.LeadingZeroCount((ulong)value);
+        return highBits != 0 ? 128 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 64 - BitOperations.LeadingZeroCount((ulong)value);
     }
 
     /// <summary>
@@ -579,7 +579,7 @@ public static class NumberExtensions {
     public static int Log2Ceiling(this UInt128 value) {
         if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
         ulong highBits = (ulong)(--value >> 64);
-        return highBits > 0 ? 128 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 64 - BitOperations.LeadingZeroCount((ulong)value);
+        return highBits != 0 ? 128 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 64 - BitOperations.LeadingZeroCount((ulong)value);
     }
 
     /// <summary>
@@ -762,7 +762,7 @@ public static class NumberExtensions {
     /// <param name="mul">optional multiplicand</param>
     /// <returns>(mul * num^exp) % mod</returns>
     public static byte ModPow(this byte mod, byte num, byte exp, byte mul = 1) {
-        if (exp > 0) {
+        if (exp != 0) {
             for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
@@ -788,7 +788,7 @@ public static class NumberExtensions {
             num = mod.ModInverse(num);
             exp = (sbyte)-exp;
         }
-        if (exp > 0) {
+        if (exp != 0) {
             for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
@@ -810,7 +810,7 @@ public static class NumberExtensions {
     /// <param name="mul">optional multiplicand</param>
     /// <returns>(mul * num^exp) % mod</returns>
     public static ushort ModPow(this ushort mod, ushort num, ushort exp, ushort mul = 1) {
-        if (exp > 0) {
+        if (exp != 0) {
             for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
@@ -836,7 +836,7 @@ public static class NumberExtensions {
             num = mod.ModInverse(num);
             exp = (short)-exp;
         }
-        if (exp > 0) {
+        if (exp != 0) {
             for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
@@ -858,7 +858,7 @@ public static class NumberExtensions {
     /// <param name="mul">optional multiplicand</param>
     /// <returns>(mul * num^exp) % mod</returns>
     public static uint ModPow(this uint mod, uint num, uint exp, uint mul = 1) {
-        if (exp > 0) {
+        if (exp != 0) {
             for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
@@ -884,7 +884,7 @@ public static class NumberExtensions {
             num = mod.ModInverse(num);
             exp = -exp;
         }
-        if (exp > 0) {
+        if (exp != 0) {
             for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
@@ -906,7 +906,7 @@ public static class NumberExtensions {
     /// <param name="mul">optional multiplicand</param>
     /// <returns>(mul * num^exp) % mod</returns>
     public static ulong ModPow(this ulong mod, ulong num, ulong exp, ulong mul = 1) {
-        if (exp > 0) {
+        if (exp != 0) {
             for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
@@ -932,7 +932,7 @@ public static class NumberExtensions {
             num = mod.ModInverse(num);
             exp = -exp;
         }
-        if (exp > 0) {
+        if (exp != 0) {
             for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
@@ -963,7 +963,7 @@ public static class NumberExtensions {
     /// <param name="mul">multiplicand</param>
     /// <returns>(mul * num^exp) % mod</returns>
     public static UInt128 ModPow(this UInt128 mod, UInt128 num, UInt128 exp, UInt128 mul) {
-        if (exp > 0) {
+        if (exp != 0) {
             for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
@@ -998,7 +998,7 @@ public static class NumberExtensions {
             num = mod.ModInverse(num);
             exp = -exp;
         }
-        if (exp > 0) {
+        if (exp != 0) {
             for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
@@ -1033,7 +1033,7 @@ public static class NumberExtensions {
             num = mod.ModInverse(num);
             exp = (sbyte)-exp;
         }
-        if (exp > 0) {
+        if (exp != 0) {
             for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
@@ -1060,7 +1060,7 @@ public static class NumberExtensions {
             (r, rNext) = (rNext, (sbyte)(r - quotient * rNext));
             (t, tNext) = (tNext, (sbyte)(t - quotient * tNext));
         }
-        if (r > 1) throw new ArgumentException("No inverse exists");
+        if (r != 1) throw new ArgumentException("No inverse exists");
         if (t < 0) t += mod;
         return t;
     }
@@ -1079,7 +1079,7 @@ public static class NumberExtensions {
             (r, rNext) = (rNext, (short)(r - quotient * rNext));
             (t, tNext) = (tNext, (short)(t - quotient * tNext));
         }
-        if (r > 1) throw new ArgumentException("No inverse exists");
+        if (r != 1) throw new ArgumentException("No inverse exists");
         if (t < 0) t += mod;
         return t;
     }
@@ -1098,7 +1098,7 @@ public static class NumberExtensions {
             (r, rNext) = (rNext, r - quotient * rNext);
             (t, tNext) = (tNext, t - quotient * tNext);
         }
-        if (r > 1) throw new ArgumentException("No inverse exists");
+        if (r != 1) throw new ArgumentException("No inverse exists");
         if (t < 0) t += mod;
         return t;
     }
@@ -1117,7 +1117,7 @@ public static class NumberExtensions {
             (r, rNext) = (rNext, r - quotient * rNext);
             (t, tNext) = (tNext, t - quotient * tNext);
         }
-        if (r > 1) throw new ArgumentException("No inverse exists");
+        if (r != 1) throw new ArgumentException("No inverse exists");
         if (t < 0) t += mod;
         return t;
     }
@@ -1136,7 +1136,7 @@ public static class NumberExtensions {
             (r, rNext) = (rNext, r - quotient * rNext);
             (t, tNext) = (tNext, t - quotient * tNext);
         }
-        if (r > 1) throw new ArgumentException("No inverse exists");
+        if (r != 1) throw new ArgumentException("No inverse exists");
         if (t < 0) t += mod;
         return t;
     }
@@ -1155,7 +1155,7 @@ public static class NumberExtensions {
             (r, rNext) = (rNext, r - quotient * rNext);
             (t, tNext) = (tNext, t - quotient * tNext);
         }
-        if (r > 1) throw new ArgumentException("No inverse exists");
+        if (r != 1) throw new ArgumentException("No inverse exists");
         if (t < 0) t += mod;
         return t;
     }
