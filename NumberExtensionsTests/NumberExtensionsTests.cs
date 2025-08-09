@@ -459,12 +459,12 @@ public class NumberExtensionsTests {
         Assert.AreEqual((Int128)25, ((Int128)29).ModInverse(7));
         Assert.AreEqual((BigInteger)25, ((BigInteger)29).ModInverse(7));
         
-        Assert.ThrowsException<ArgumentException>(() => ((sbyte)2).ModInverse(0));
-        Assert.ThrowsException<ArgumentException>(() => ((short)2).ModInverse(0));
-        Assert.ThrowsException<ArgumentException>(() => ((int)2).ModInverse(0));
-        Assert.ThrowsException<ArgumentException>(() => ((long)2).ModInverse(0));
-        Assert.ThrowsException<ArgumentException>(() => ((Int128)2).ModInverse(0));
-        Assert.ThrowsException<ArgumentException>(() => ((BigInteger)2).ModInverse(0));
+        Assert.ThrowsExactly<ArgumentException>(() => ((sbyte)2).ModInverse(0));
+        Assert.ThrowsExactly<ArgumentException>(() => ((short)2).ModInverse(0));
+        Assert.ThrowsExactly<ArgumentException>(() => ((int)2).ModInverse(0));
+        Assert.ThrowsExactly<ArgumentException>(() => ((long)2).ModInverse(0));
+        Assert.ThrowsExactly<ArgumentException>(() => ((Int128)2).ModInverse(0));
+        Assert.ThrowsExactly<ArgumentException>(() => ((BigInteger)2).ModInverse(0));
     }
 
     [TestMethod]
