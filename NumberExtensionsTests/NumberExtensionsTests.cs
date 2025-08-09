@@ -190,73 +190,73 @@ public class NumberExtensionsTests {
     [TestMethod]
     public void TestLog2FloorAndLog2Ceiling() {
         // // test log2(-1) throws exception
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((sbyte)-1).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((short)-1).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((int)-1).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((long)-1).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((sbyte)-1).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((short)-1).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((int)-1).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((long)-1).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((Int128)(-1)).Log2Ceiling());
-        //
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((double)-1).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((float)-1).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((Half)(-1)).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((double)-1).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((float)-1).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((Half)(-1)).Log2Ceiling());
-        //
-        // // test log2(0) throws exception
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((byte)0).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((sbyte)0).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((ushort)0).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((short)0).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((uint)0).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((int)0).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((ulong)0).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((long)0).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => Int128.Zero.Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => UInt128.Zero.Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((byte)0).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((sbyte)0).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((ushort)0).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((short)0).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((uint)0).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((int)0).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((ulong)0).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((long)0).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => Int128.Zero.Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => UInt128.Zero.Log2Ceiling());
-        //
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((double)0).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((float)0).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((Half)0).Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((double)0).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((float)0).Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => ((Half)0).Log2Ceiling());
-        //
-        // // test log2(special floating-point values) throws exception
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => double.NaN.Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => float.NaN.Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => Half.NaN.Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => double.NaN.Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => float.NaN.Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => Half.NaN.Log2Ceiling());
-        //
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => double.PositiveInfinity.Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => float.PositiveInfinity.Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => Half.PositiveInfinity.Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => double.PositiveInfinity.Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => float.PositiveInfinity.Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => Half.PositiveInfinity.Log2Ceiling());
-        //
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => double.NegativeInfinity.Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => float.NegativeInfinity.Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => Half.NegativeInfinity.Log2Floor());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => double.NegativeInfinity.Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => float.NegativeInfinity.Log2Ceiling());
-        // Assert.ThrowsException<ArgumentOutOfRangeException>(() => Half.NegativeInfinity.Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((sbyte)-1).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((short)-1).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((int)-1).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((long)-1).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((sbyte)-1).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((short)-1).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((int)-1).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((long)-1).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((Int128)(-1)).Log2Ceiling());
+
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((double)-1).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((float)-1).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((Half)(-1)).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((double)-1).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((float)-1).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((Half)(-1)).Log2Ceiling());
+
+        // test log2(0) throws exception
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((byte)0).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((sbyte)0).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((ushort)0).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((short)0).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((uint)0).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((int)0).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((ulong)0).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((long)0).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Int128.Zero.Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => UInt128.Zero.Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((byte)0).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((sbyte)0).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((ushort)0).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((short)0).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((uint)0).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((int)0).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((ulong)0).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((long)0).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Int128.Zero.Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => UInt128.Zero.Log2Ceiling());
+
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((double)0).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((float)0).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((Half)0).Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((double)0).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((float)0).Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ((Half)0).Log2Ceiling());
+
+        // test log2(special floating-point values) throws exception
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => double.NaN.Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => float.NaN.Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Half.NaN.Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => double.NaN.Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => float.NaN.Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Half.NaN.Log2Ceiling());
+
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => double.PositiveInfinity.Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => float.PositiveInfinity.Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Half.PositiveInfinity.Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => double.PositiveInfinity.Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => float.PositiveInfinity.Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Half.PositiveInfinity.Log2Ceiling());
+
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => double.NegativeInfinity.Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => float.NegativeInfinity.Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Half.NegativeInfinity.Log2Floor());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => double.NegativeInfinity.Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => float.NegativeInfinity.Log2Ceiling());
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Half.NegativeInfinity.Log2Ceiling());
 
         // test ceiling of log2(1) is 0 since this is handled by a special case
         Assert.AreEqual(0, ((byte)1).Log2Ceiling());
