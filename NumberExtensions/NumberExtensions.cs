@@ -1,18 +1,44 @@
 ﻿using System.Numerics;
-using System.Runtime.InteropServices;
 
 namespace NumberExtensions;
 
 public static class NumberExtensions {
+    const int BYTE_BITS = sizeof(byte) * 8;
+    const byte BYTE_MASK1 = 0x55;
+    const byte BYTE_MASK2 = 0x33;
+    const byte BYTE_MASK4 = 0x0F;
+
+    const int USHORT_BITS = sizeof(ushort) * 8;
+    const ushort USHORT_MASK1 = 0x5555;
+    const ushort USHORT_MASK2 = 0x3333;
+    const ushort USHORT_MASK4 = 0x0F0F;
+    const ushort USHORT_MASK8 = 0x00FF;
+
+    const int UINT_BITS = sizeof(uint) * 8;
+    const uint UINT_MASK1 = 0x55555555U;
+    const uint UINT_MASK2 = 0x33333333U;
+    const uint UINT_MASK4 = 0x0F0F0F0FU;
+    const uint UINT_MASK8 = 0x00FF00FFU;
+    const uint UINT_MASK16 = 0x0000FFFFU;
+
+    const int ULONG_BITS = sizeof(ulong) * 8;
+    const ulong ULONG_MASK1 = 0x5555555555555555UL;
+    const ulong ULONG_MASK2 = 0x3333333333333333UL;
+    const ulong ULONG_MASK4 = 0x0F0F0F0F0F0F0F0FUL;
+    const ulong ULONG_MASK8 = 0x00FF00FF00FF00FFUL;
+    const ulong ULONG_MASK16 = 0x0000FFFF0000FFFFUL;
+    const ulong ULONG_MASK32 = 0x00000000FFFFFFFFUL;
+
+    const int UINT128_BITS = 2 * ULONG_BITS;
     // used for BitCount and ReverseBits
     private static readonly UInt128
-        UINT128_MASK1 = new(0x5555555555555555UL, 0x5555555555555555UL),
-        UINT128_MASK2 = new(0x3333333333333333UL, 0x3333333333333333UL),
-        UINT128_MASK4 = new(0x0F0F0F0F0F0F0F0FUL, 0x0F0F0F0F0F0F0F0FUL),
-        UINT128_MASK8 = new(0x00FF00FF00FF00FFUL, 0x00FF00FF00FF00FFUL),
-        UINT128_MASK16 = new(0x0000FFFF0000FFFFUL, 0x0000FFFF0000FFFFUL),
-        UINT128_MASK32 = new(0x00000000FFFFFFFFUL, 0x00000000FFFFFFFFUL),
-        UINT128_MASK64 = new(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL);
+        UINT128_MASK1 = new(ULONG_MASK1, ULONG_MASK1),
+        UINT128_MASK2 = new(ULONG_MASK2, ULONG_MASK2),
+        UINT128_MASK4 = new(ULONG_MASK4, ULONG_MASK4),
+        UINT128_MASK8 = new(ULONG_MASK8, ULONG_MASK8),
+        UINT128_MASK16 = new(ULONG_MASK16, ULONG_MASK16),
+        UINT128_MASK32 = new(ULONG_MASK32, ULONG_MASK32),
+        UINT128_MASK64 = new(ulong.MinValue, ulong.MaxValue);
 
     /// <summary>
     /// Counts the number of bits set in the value.
@@ -27,9 +53,9 @@ public static class NumberExtensions {
     /// <param name="value">value to count bits in</param>
     /// <returns>number of bits set in value</returns>
     public static int BitCount(this byte value) {
-        value = (byte)((value & 0x55) + ((value >> 1) & 0x55));
-        value = (byte)((value & 0x33) + ((value >> 2) & 0x33));
-        return (value & 0x0F) + (value >> 4);
+        value = (byte)((value & BYTE_MASK1) + ((value >> 1) & BYTE_MASK1));
+        value = (byte)((value & BYTE_MASK2) + ((value >> 2) & BYTE_MASK2));
+        return (value & BYTE_MASK4) + (value >> 4);
     }
 
     /// <summary>
@@ -45,10 +71,10 @@ public static class NumberExtensions {
     /// <param name="value">value to count bits in</param>
     /// <returns>number of bits set in value</returns>
     public static int BitCount(this ushort value) {
-        value = (ushort)((value & 0x5555) + ((value >> 1) & 0x5555));
-        value = (ushort)((value & 0x3333) + ((value >> 2) & 0x3333));
-        value = (ushort)((value & 0x0F0F) + ((value >> 4) & 0x0F0F));
-        return (value & 0x00FF) + (value >> 8);
+        value = (ushort)((value & USHORT_MASK1) + ((value >> 1) & USHORT_MASK1));
+        value = (ushort)((value & USHORT_MASK2) + ((value >> 2) & USHORT_MASK2));
+        value = (ushort)((value & USHORT_MASK4) + ((value >> 4) & USHORT_MASK4));
+        return (value & USHORT_MASK8) + (value >> 8);
     }
 
     /// <summary>
@@ -64,11 +90,11 @@ public static class NumberExtensions {
     /// <param name="value">value to count bits in</param>
     /// <returns>number of bits set in value</returns>
     public static int BitCount(this uint value) {
-        value = (value & 0x55555555u) + ((value >> 1) & 0x55555555u);
-        value = (value & 0x33333333u) + ((value >> 2) & 0x33333333u);
-        value = (value & 0x0F0F0F0Fu) + ((value >> 4) & 0x0F0F0F0Fu);
-        value = (value & 0x00FF00FFu) + ((value >> 8) & 0x00FF00FFu);
-        return (int)((value & 0x0000FFFFu) + (value >> 16));
+        value = (value & UINT_MASK1) + ((value >> 1) & UINT_MASK1);
+        value = (value & UINT_MASK2) + ((value >> 2) & UINT_MASK2);
+        value = (value & UINT_MASK4) + ((value >> 4) & UINT_MASK4);
+        value = (value & UINT_MASK8) + ((value >> 8) & UINT_MASK8);
+        return (int)((value & UINT_MASK16) + (value >> 16));
     }
 
     /// <summary>
@@ -84,12 +110,12 @@ public static class NumberExtensions {
     /// <param name="value">value to count bits in</param>
     /// <returns>number of bits set in value</returns>
     public static int BitCount(this ulong value) {
-        value = (value & 0x5555555555555555UL) + ((value >> 1) & 0x5555555555555555UL);
-        value = (value & 0x3333333333333333UL) + ((value >> 2) & 0x3333333333333333UL);
-        value = (value & 0x0F0F0F0F0F0F0F0FUL) + ((value >> 4) & 0x0F0F0F0F0F0F0F0FUL);
-        value = (value & 0x00FF00FF00FF00FFUL) + ((value >> 8) & 0x00FF00FF00FF00FFUL);
-        value = (value & 0x0000FFFF0000FFFFUL) + ((value >> 16) & 0x0000FFFF0000FFFFUL);
-        return (int)((value & 0x00000000FFFFFFFFUL) + (value >> 32));
+        value = (value & ULONG_MASK1) + ((value >> 1) & ULONG_MASK1);
+        value = (value & ULONG_MASK2) + ((value >> 2) & ULONG_MASK2);
+        value = (value & ULONG_MASK4) + ((value >> 4) & ULONG_MASK4);
+        value = (value & ULONG_MASK8) + ((value >> 8) & ULONG_MASK8);
+        value = (value & ULONG_MASK16) + ((value >> 16) & ULONG_MASK16);
+        return (int)((value & ULONG_MASK32) + (value >> 32));
     }
 
     public static int BitCount(this Int128 value) => BitCount((UInt128)value);
@@ -122,8 +148,8 @@ public static class NumberExtensions {
     /// <param name="value">value to reverse bits of</param>
     /// <returns>value with bits reversed</returns>
     public static byte ReverseBits(this byte value) {
-        value = (byte)(((value >> 1) & 0x55) | ((value & 0x55) << 1));
-        value = (byte)(((value >> 2) & 0x33) | ((value & 0x33) << 2));
+        value = (byte)(((value >> 1) & BYTE_MASK1) | ((value & BYTE_MASK1) << 1));
+        value = (byte)(((value >> 2) & BYTE_MASK2) | ((value & BYTE_MASK2) << 2));
         return (byte)((value >> 4) | (value << 4));
     }
 
@@ -140,9 +166,9 @@ public static class NumberExtensions {
     /// <param name="value">value to reverse bits of</param>
     /// <returns>value with bits reversed</returns>
     public static ushort ReverseBits(this ushort value) {
-        value = (ushort)(((value >> 1) & 0x5555) | ((value & 0x5555) << 1));
-        value = (ushort)(((value >> 2) & 0x3333) | ((value & 0x3333) << 2));
-        value = (ushort)(((value >> 4) & 0x0F0F) | ((value & 0x0F0F) << 4));
+        value = (ushort)(((value >> 1) & USHORT_MASK1) | ((value & USHORT_MASK1) << 1));
+        value = (ushort)(((value >> 2) & USHORT_MASK2) | ((value & USHORT_MASK2) << 2));
+        value = (ushort)(((value >> 4) & USHORT_MASK4) | ((value & USHORT_MASK4) << 4));
         return (ushort)((value >> 8) | (value << 8));
     }
 
@@ -159,10 +185,10 @@ public static class NumberExtensions {
     /// <param name="value">value to reverse bits of</param>
     /// <returns>value with bits reversed</returns>
     public static uint ReverseBits(this uint value) {
-        value = (uint)(((value >> 1) & 0x55555555) | ((value & 0x55555555) << 1));
-        value = (uint)(((value >> 2) & 0x33333333) | ((value & 0x33333333) << 2));
-        value = (uint)(((value >> 4) & 0x0F0F0F0F) | ((value & 0x0F0F0F0F) << 4));
-        value = (uint)(((value >> 8) & 0x00FF00FF) | ((value & 0x00FF00FF) << 8));
+        value = (uint)(((value >> 1) & UINT_MASK1) | ((value & UINT_MASK1) << 1));
+        value = (uint)(((value >> 2) & UINT_MASK2) | ((value & UINT_MASK2) << 2));
+        value = (uint)(((value >> 4) & UINT_MASK4) | ((value & UINT_MASK4) << 4));
+        value = (uint)(((value >> 8) & UINT_MASK8) | ((value & UINT_MASK8) << 8));
         return (value >> 16) | (value << 16);
     }
 
@@ -179,11 +205,11 @@ public static class NumberExtensions {
     /// <param name="value">value to reverse bits of</param>
     /// <returns>value with bits reversed</returns>
     public static ulong ReverseBits(this ulong value) {
-        value = (ulong)(((value >> 1) & 0x5555555555555555UL) | ((value & 0x5555555555555555UL) << 1));
-        value = (ulong)(((value >> 2) & 0x3333333333333333UL) | ((value & 0x3333333333333333UL) << 2));
-        value = (ulong)(((value >> 4) & 0x0F0F0F0F0F0F0F0FUL) | ((value & 0x0F0F0F0F0F0F0F0FUL) << 4));
-        value = (ulong)(((value >> 8) & 0x00FF00FF00FF00FFUL) | ((value & 0x00FF00FF00FF00FFUL) << 8));
-        value = (ulong)(((value >> 16) & 0x0000FFFF0000FFFFUL) | ((value & 0x0000FFFF0000FFFFUL) << 16));
+        value = (ulong)(((value >> 1) & ULONG_MASK1) | ((value & ULONG_MASK1) << 1));
+        value = (ulong)(((value >> 2) & ULONG_MASK2) | ((value & ULONG_MASK2) << 2));
+        value = (ulong)(((value >> 4) & ULONG_MASK4) | ((value & ULONG_MASK4) << 4));
+        value = (ulong)(((value >> 8) & ULONG_MASK8) | ((value & ULONG_MASK8) << 8));
+        value = (ulong)(((value >> 16) & ULONG_MASK16) | ((value & ULONG_MASK16) << 16));
         return (value >> 32) | (value << 32);
     }
 
@@ -294,7 +320,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
     public static int Log2Floor(this sbyte value) {
         if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 31 - BitOperations.LeadingZeroCount((uint)value);
+        return UINT_BITS - 1 - BitOperations.LeadingZeroCount((uint)value);
     }
 
     /// <summary>
@@ -305,7 +331,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
     public static int Log2Floor(this byte value) {
         if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 31 - BitOperations.LeadingZeroCount((uint)value);
+        return UINT_BITS - 1 - BitOperations.LeadingZeroCount((uint)value);
     }
 
     /// <summary>
@@ -316,7 +342,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
     public static int Log2Floor(this short value) {
         if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 31 - BitOperations.LeadingZeroCount((uint)value);
+        return UINT_BITS - 1 - BitOperations.LeadingZeroCount((uint)value);
     }
 
     /// <summary>
@@ -327,7 +353,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
     public static int Log2Floor(this ushort value) {
         if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 31 - BitOperations.LeadingZeroCount((uint)value);
+        return UINT_BITS - 1 - BitOperations.LeadingZeroCount((uint)value);
     }
 
     /// <summary>
@@ -338,7 +364,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
     public static int Log2Floor(this int value) {
         if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 31 - BitOperations.LeadingZeroCount((uint)value);
+        return UINT_BITS - 1 - BitOperations.LeadingZeroCount((uint)value);
     }
 
     /// <summary>
@@ -349,7 +375,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
     public static int Log2Floor(this uint value) {
         if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 31 - BitOperations.LeadingZeroCount((uint)value);
+        return UINT_BITS - 1 - BitOperations.LeadingZeroCount((uint)value);
     }
 
     /// <summary>
@@ -360,7 +386,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
     public static int Log2Floor(this long value) {
         if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 63 - BitOperations.LeadingZeroCount((ulong)value);
+        return ULONG_BITS - 1 - BitOperations.LeadingZeroCount((ulong)value);
     }
 
     /// <summary>
@@ -371,7 +397,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
     public static int Log2Floor(this ulong value) {
         if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 63 - BitOperations.LeadingZeroCount((ulong)value);
+        return ULONG_BITS - 1 - BitOperations.LeadingZeroCount((ulong)value);
     }
 
     /// <summary>
@@ -382,8 +408,10 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
     public static int Log2Floor(this Int128 value) {
         if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        ulong highBits = (ulong)(value >> 64);
-        return highBits != 0 ? 127 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 63 - BitOperations.LeadingZeroCount((ulong)value);
+        ulong highBits = (ulong)(value >> ULONG_BITS);
+        return highBits != 0 ?
+            UINT128_BITS - 1 - BitOperations.LeadingZeroCount((ulong)(value >> ULONG_BITS)) :
+            ULONG_BITS - 1 - BitOperations.LeadingZeroCount((ulong)value);
     }
 
     /// <summary>
@@ -394,8 +422,10 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
     public static int Log2Floor(this UInt128 value) {
         if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        ulong highBits = (ulong)(value >> 64);
-        return highBits != 0 ? 127 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 63 - BitOperations.LeadingZeroCount((ulong)value);
+        ulong highBits = (ulong)(value >> ULONG_BITS);
+        return highBits != 0 ?
+            UINT128_BITS - 1 - BitOperations.LeadingZeroCount((ulong)(value >> ULONG_BITS)) :
+            ULONG_BITS - 1 - BitOperations.LeadingZeroCount((ulong)value);
     }
 
     /// <summary>
@@ -405,7 +435,10 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Floor(this double value) {
-        const int MANTISSA_BITS = 52, EXPONENT_BITS = 11;
+        const int MANTISSA_BITS = 52, EXPONENT_BITS = 11,
+            EXPONENT_BIAS = (1 << (EXPONENT_BITS - 1)) - 1,
+            DENORMALIZED_BIAS = ULONG_BITS - EXPONENT_BIAS - MANTISSA_BITS;
+
         long l = BitConverter.DoubleToInt64Bits(value);
         if (l <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
@@ -416,10 +449,10 @@ public static class NumberExtensions {
 
         var mantissa = l & ((1L << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return -1011 - BitOperations.LeadingZeroCount((ulong)mantissa);
+            return DENORMALIZED_BIAS - BitOperations.LeadingZeroCount((ulong)mantissa);
 
         // there is an implied 1 prefix on the mantissa normally
-        return (int)(exponent - 1023);
+        return (int)(exponent - EXPONENT_BIAS);
     }
 
     /// <summary>
@@ -429,7 +462,10 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Floor(this float value) {
-        const int MANTISSA_BITS = 23, EXPONENT_BITS = 8;
+        const int MANTISSA_BITS = 23, EXPONENT_BITS = 8,
+            EXPONENT_BIAS = (1 << (EXPONENT_BITS - 1)) - 1,
+            DENORMALIZED_BIAS = UINT_BITS - EXPONENT_BIAS - MANTISSA_BITS;
+
         int i = BitConverter.SingleToInt32Bits(value);
         if (i <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
@@ -440,10 +476,10 @@ public static class NumberExtensions {
 
         var mantissa = i & ((1 << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return -118 - BitOperations.LeadingZeroCount((uint)mantissa);
+            return DENORMALIZED_BIAS - BitOperations.LeadingZeroCount((uint)mantissa);
 
         // there is an implied 1 prefix on the mantissa normally
-        return exponent - 127;
+        return exponent - EXPONENT_BIAS;
     }
 
     /// <summary>
@@ -453,7 +489,10 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Floor(this Half value) {
-        const int MANTISSA_BITS = 10, EXPONENT_BITS = 5;
+        const int MANTISSA_BITS = 10, EXPONENT_BITS = 5,
+            EXPONENT_BIAS = (1 << (EXPONENT_BITS - 1)) - 1,
+            DENORMALIZED_BIAS = UINT_BITS - EXPONENT_BIAS - MANTISSA_BITS;
+
         short s = BitConverter.HalfToInt16Bits(value);
         if (s <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
@@ -464,10 +503,10 @@ public static class NumberExtensions {
 
         var mantissa = s & ((1 << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return 7 - BitOperations.LeadingZeroCount((uint)mantissa);
+            return DENORMALIZED_BIAS - BitOperations.LeadingZeroCount((uint)mantissa);
 
         // there is an implied 1 prefix on the mantissa normally
-        return exponent - 15;
+        return exponent - EXPONENT_BIAS;
     }
 
     /// <summary>
@@ -478,7 +517,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
     public static int Log2Ceiling(this sbyte value) {
         if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 32 - BitOperations.LeadingZeroCount((uint)value - 1);
+        return UINT_BITS - BitOperations.LeadingZeroCount((uint)value - 1);
     }
 
     /// <summary>
@@ -489,7 +528,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
     public static int Log2Ceiling(this byte value) {
         if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 32 - BitOperations.LeadingZeroCount((uint)value - 1);
+        return UINT_BITS - BitOperations.LeadingZeroCount((uint)value - 1);
     }
 
     /// <summary>
@@ -500,7 +539,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
     public static int Log2Ceiling(this short value) {
         if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 32 - BitOperations.LeadingZeroCount((uint)value - 1);
+        return UINT_BITS - BitOperations.LeadingZeroCount((uint)value - 1);
     }
 
     /// <summary>
@@ -511,7 +550,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
     public static int Log2Ceiling(this ushort value) {
         if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 32 - BitOperations.LeadingZeroCount((uint)value - 1);
+        return UINT_BITS - BitOperations.LeadingZeroCount((uint)value - 1);
     }
 
     /// <summary>
@@ -522,7 +561,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
     public static int Log2Ceiling(this int value) {
         if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 32 - BitOperations.LeadingZeroCount((uint)value - 1);
+        return UINT_BITS - BitOperations.LeadingZeroCount((uint)value - 1);
     }
 
     /// <summary>
@@ -533,7 +572,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
     public static int Log2Ceiling(this uint value) {
         if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 32 - BitOperations.LeadingZeroCount((uint)value - 1);
+        return UINT_BITS - BitOperations.LeadingZeroCount((uint)value - 1);
     }
 
     /// <summary>
@@ -544,7 +583,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
     public static int Log2Ceiling(this long value) {
         if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 64 - BitOperations.LeadingZeroCount((ulong)value - 1);
+        return ULONG_BITS - BitOperations.LeadingZeroCount((ulong)value - 1);
     }
 
     /// <summary>
@@ -555,7 +594,7 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
     public static int Log2Ceiling(this ulong value) {
         if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        return 64 - BitOperations.LeadingZeroCount((ulong)value - 1);
+        return ULONG_BITS - BitOperations.LeadingZeroCount((ulong)value - 1);
     }
 
     /// <summary>
@@ -566,8 +605,10 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
     public static int Log2Ceiling(this Int128 value) {
         if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        ulong highBits = (ulong)(--value >> 64);
-        return highBits != 0 ? 128 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 64 - BitOperations.LeadingZeroCount((ulong)value);
+        ulong highBits = (ulong)(--value >> ULONG_BITS);
+        return highBits != 0 ?
+            UINT128_BITS - BitOperations.LeadingZeroCount((ulong)(value >> ULONG_BITS)) :
+            ULONG_BITS - BitOperations.LeadingZeroCount((ulong)value);
     }
 
     /// <summary>
@@ -578,8 +619,10 @@ public static class NumberExtensions {
     /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
     public static int Log2Ceiling(this UInt128 value) {
         if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-        ulong highBits = (ulong)(--value >> 64);
-        return highBits != 0 ? 128 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 64 - BitOperations.LeadingZeroCount((ulong)value);
+        ulong highBits = (ulong)(--value >> ULONG_BITS);
+        return highBits != 0 ?
+            UINT128_BITS - BitOperations.LeadingZeroCount((ulong)(value >> ULONG_BITS)) :
+            ULONG_BITS - BitOperations.LeadingZeroCount((ulong)value);
     }
 
     /// <summary>
@@ -589,7 +632,10 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Ceiling(this double value) {
-        const int MANTISSA_BITS = 52, EXPONENT_BITS = 11;
+        const int MANTISSA_BITS = 52, EXPONENT_BITS = 11,
+            EXPONENT_BIAS = (1 << (EXPONENT_BITS - 1)) - 1,
+            DENORMALIZED_BIAS = ULONG_BITS - EXPONENT_BIAS - MANTISSA_BITS + 1;
+
         long l = BitConverter.DoubleToInt64Bits(value);
         if (l <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
@@ -600,10 +646,10 @@ public static class NumberExtensions {
 
         var mantissa = l & ((1L << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return -1010 - BitOperations.LeadingZeroCount((ulong)--mantissa);
+            return DENORMALIZED_BIAS - BitOperations.LeadingZeroCount((ulong)--mantissa);
 
         // there is an implied 1 prefix on the mantissa normally
-        return (int)exponent - (mantissa == 0 ? 1023 : 1022);
+        return (int)exponent - (mantissa != 0 ? EXPONENT_BIAS - 1 : EXPONENT_BIAS);
     }
 
     /// <summary>
@@ -613,7 +659,10 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Ceiling(this float value) {
-        const int MANTISSA_BITS = 23, EXPONENT_BITS = 8;
+        const int MANTISSA_BITS = 23, EXPONENT_BITS = 8,
+            EXPONENT_BIAS = (1 << (EXPONENT_BITS - 1)) - 1,
+            DENORMALIZED_BIAS = UINT_BITS - EXPONENT_BIAS - MANTISSA_BITS + 1;
+
         int i = BitConverter.SingleToInt32Bits(value);
         if (i <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
@@ -624,10 +673,10 @@ public static class NumberExtensions {
 
         var mantissa = i & ((1 << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return -117 - BitOperations.LeadingZeroCount((uint)--mantissa);
+            return DENORMALIZED_BIAS - BitOperations.LeadingZeroCount((uint)--mantissa);
 
         // there is an implied 1 prefix on the mantissa normally
-        return exponent - (mantissa == 0 ? 127 : 126);
+        return exponent - (mantissa != 0 ? EXPONENT_BIAS - 1 : EXPONENT_BIAS);
     }
 
     /// <summary>
@@ -637,7 +686,10 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Ceiling(this Half value) {
-        const int MANTISSA_BITS = 10, EXPONENT_BITS = 5;
+        const int MANTISSA_BITS = 10, EXPONENT_BITS = 5,
+            EXPONENT_BIAS = (1 << (EXPONENT_BITS - 1)) - 1,
+            DENORMALIZED_BIAS = UINT_BITS - EXPONENT_BIAS - MANTISSA_BITS + 1;
+
         short s = BitConverter.HalfToInt16Bits(value);
         if (s <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
@@ -648,10 +700,10 @@ public static class NumberExtensions {
 
         var mantissa = s & ((1 << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return 8 - BitOperations.LeadingZeroCount((uint)--mantissa);
+            return DENORMALIZED_BIAS - BitOperations.LeadingZeroCount((uint)--mantissa);
 
         // there is an implied 1 prefix on the mantissa normally
-        return exponent - (mantissa == 0 ? 15 : 14);
+        return exponent - (mantissa != 0 ? EXPONENT_BIAS - 1 : EXPONENT_BIAS);
     }
 
     /// <summary>
