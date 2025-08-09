@@ -227,19 +227,19 @@ public static class NumberExtensions {
         long l = BitConverter.DoubleToInt64Bits(value);
         if (l <= 0) // negative or zero or -NaN or -Infinity
             return false;
-    
+
         var exponent = l >> MANTISSA_BITS;
         if (exponent == (1 << EXPONENT_BITS) - 1) // max exponent = NaN or Infinity
             return false;
-    
+
         var mantissa = l & ((1L << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return mantissa.IsPowerOf2();
-    
+            return mantissa > 0 && (mantissa & (mantissa - 1)) == 0;
+
         // there is an implied 1 prefix on the mantissa normally
         return mantissa == 0;
     }
-    
+
     /// <summary>
     /// Determines if number is a power of 2.
     /// </summary>
@@ -250,19 +250,19 @@ public static class NumberExtensions {
         int i = BitConverter.SingleToInt32Bits(value);
         if (i <= 0) // negative or zero or -NaN or -Infinity
             return false;
-    
+
         var exponent = i >> MANTISSA_BITS;
         if (exponent == (1 << EXPONENT_BITS) - 1) // max exponent = NaN or Infinity
             return false;
-    
+
         var mantissa = i & ((1 << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return mantissa.IsPowerOf2();
-    
+            return mantissa > 0 && (mantissa & (mantissa - 1)) == 0;
+
         // there is an implied 1 prefix on the mantissa normally
         return mantissa == 0;
     }
-    
+
     /// <summary>
     /// Determines if number is a power of 2.
     /// </summary>
@@ -273,15 +273,15 @@ public static class NumberExtensions {
         short s = BitConverter.HalfToInt16Bits(value);
         if (s <= 0) // negative or zero or -NaN or -Infinity
             return false;
-    
+
         var exponent = s >> MANTISSA_BITS;
         if (exponent == (1 << EXPONENT_BITS) - 1) // max exponent = NaN or Infinity
             return false;
-    
+
         var mantissa = s & ((1 << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return mantissa.IsPowerOf2();
-    
+            return mantissa > 0 && (mantissa & (mantissa - 1)) == 0;
+
         // there is an implied 1 prefix on the mantissa normally
         return mantissa == 0;
     }
@@ -292,16 +292,110 @@ public static class NumberExtensions {
     /// <param name="value">value to take log2 of</param>
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
-    public static int Log2Floor<T>(this T value)
-        where T : INumber<T>, IIncrementOperators<T>, IShiftOperators<T, int, T> {
-        int log = Marshal.SizeOf(value) * 8 - 1;
-        T one = default(T);
-        one++;
-        if ((one << log).CompareTo(default(T)) < 0) log--;
-        for (T b = one << log; b.CompareTo(default(T)) > 0; b >>= 1, log--)
-            if (value.CompareTo(b) >= 0)
-                return log;
-        throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+    public static int Log2Floor(this sbyte value) {
+        if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 31 - BitOperations.LeadingZeroCount((uint)value);
+    }
+
+    /// <summary>
+    /// Calculates the integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
+    public static int Log2Floor(this byte value) {
+        if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 31 - BitOperations.LeadingZeroCount((uint)value);
+    }
+
+    /// <summary>
+    /// Calculates the integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
+    public static int Log2Floor(this short value) {
+        if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 31 - BitOperations.LeadingZeroCount((uint)value);
+    }
+
+    /// <summary>
+    /// Calculates the integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
+    public static int Log2Floor(this ushort value) {
+        if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 31 - BitOperations.LeadingZeroCount((uint)value);
+    }
+
+    /// <summary>
+    /// Calculates the integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
+    public static int Log2Floor(this int value) {
+        if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 31 - BitOperations.LeadingZeroCount((uint)value);
+    }
+
+    /// <summary>
+    /// Calculates the integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
+    public static int Log2Floor(this uint value) {
+        if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 31 - BitOperations.LeadingZeroCount((uint)value);
+    }
+
+    /// <summary>
+    /// Calculates the integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
+    public static int Log2Floor(this long value) {
+        if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 63 - BitOperations.LeadingZeroCount((ulong)value);
+    }
+
+    /// <summary>
+    /// Calculates the integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
+    public static int Log2Floor(this ulong value) {
+        if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 63 - BitOperations.LeadingZeroCount((ulong)value);
+    }
+
+    /// <summary>
+    /// Calculates the integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
+    public static int Log2Floor(this Int128 value) {
+        if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        ulong highBits = (ulong)(value >> 64);
+        return highBits > 0 ? 127 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 63 - BitOperations.LeadingZeroCount((ulong)value);
+    }
+
+    /// <summary>
+    /// Calculates the integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
+    public static int Log2Floor(this UInt128 value) {
+        if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        ulong highBits = (ulong)(value >> 64);
+        return highBits > 0 ? 127 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 63 - BitOperations.LeadingZeroCount((ulong)value);
     }
 
     /// <summary>
@@ -315,19 +409,19 @@ public static class NumberExtensions {
         long l = BitConverter.DoubleToInt64Bits(value);
         if (l <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-    
+
         var exponent = l >> MANTISSA_BITS;
         if (exponent == (1 << EXPONENT_BITS) - 1) // max exponent = NaN or Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive finite number");
-    
+
         var mantissa = l & ((1L << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return mantissa.Log2Floor() - 1023 - 51;
-    
+            return -1011 - BitOperations.LeadingZeroCount((ulong)mantissa);
+
         // there is an implied 1 prefix on the mantissa normally
         return (int)(exponent - 1023);
     }
-    
+
     /// <summary>
     /// Calculates the integer portion of the base 2 logarithm of the value.
     /// </summary>
@@ -339,19 +433,19 @@ public static class NumberExtensions {
         int i = BitConverter.SingleToInt32Bits(value);
         if (i <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-    
+
         var exponent = i >> MANTISSA_BITS;
         if (exponent == (1 << EXPONENT_BITS) - 1) // max exponent = NaN or Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive finite number");
-    
+
         var mantissa = i & ((1 << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return mantissa.Log2Floor() - 127 - 22;
-    
+            return -118 - BitOperations.LeadingZeroCount((uint)mantissa);
+
         // there is an implied 1 prefix on the mantissa normally
         return exponent - 127;
     }
-    
+
     /// <summary>
     /// Calculates the integer portion of the base 2 logarithm of the value.
     /// </summary>
@@ -363,15 +457,15 @@ public static class NumberExtensions {
         short s = BitConverter.HalfToInt16Bits(value);
         if (s <= 0) // negative or zero or -NaN or -Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
-    
+
         var exponent = s >> MANTISSA_BITS;
         if (exponent == (1 << EXPONENT_BITS) - 1) // max exponent = NaN or Infinity
             throw new ArgumentOutOfRangeException(nameof(value), "value must be positive finite number");
-    
+
         var mantissa = s & ((1 << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return mantissa.Log2Floor() - 15 - 9;
-    
+            return 7 - BitOperations.LeadingZeroCount((uint)mantissa);
+
         // there is an implied 1 prefix on the mantissa normally
         return exponent - 15;
     }
@@ -382,17 +476,110 @@ public static class NumberExtensions {
     /// <param name="value">value to take log2 of</param>
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
-    public static int Log2Ceiling<T>(this T value)
-        where T : INumber<T>, IIncrementOperators<T>, IShiftOperators<T, int, T> {
-        int log = Marshal.SizeOf(value) * 8;
-        T one = default(T);
-        one++;
-        if (one == value) return 0;
-        if ((one << (log - 1)).CompareTo(default(T)) < 0) log--;
-        for (T b = one << (log - 1); b.CompareTo(default(T)) > 0; b >>= 1, log--)
-            if (value.CompareTo(b) > 0)
-                return log;
-        throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+    public static int Log2Ceiling(this sbyte value) {
+        if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 32 - BitOperations.LeadingZeroCount((uint)value - 1);
+    }
+
+    /// <summary>
+    /// Calculates the rounded up integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
+    public static int Log2Ceiling(this byte value) {
+        if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 32 - BitOperations.LeadingZeroCount((uint)value - 1);
+    }
+
+    /// <summary>
+    /// Calculates the rounded up integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
+    public static int Log2Ceiling(this short value) {
+        if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 32 - BitOperations.LeadingZeroCount((uint)value - 1);
+    }
+
+    /// <summary>
+    /// Calculates the rounded up integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
+    public static int Log2Ceiling(this ushort value) {
+        if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 32 - BitOperations.LeadingZeroCount((uint)value - 1);
+    }
+
+    /// <summary>
+    /// Calculates the rounded up integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
+    public static int Log2Ceiling(this int value) {
+        if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 32 - BitOperations.LeadingZeroCount((uint)value - 1);
+    }
+
+    /// <summary>
+    /// Calculates the rounded up integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
+    public static int Log2Ceiling(this uint value) {
+        if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 32 - BitOperations.LeadingZeroCount((uint)value - 1);
+    }
+
+    /// <summary>
+    /// Calculates the rounded up integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
+    public static int Log2Ceiling(this long value) {
+        if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 64 - BitOperations.LeadingZeroCount((ulong)value - 1);
+    }
+
+    /// <summary>
+    /// Calculates the rounded up integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
+    public static int Log2Ceiling(this ulong value) {
+        if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        return 64 - BitOperations.LeadingZeroCount((ulong)value - 1);
+    }
+
+    /// <summary>
+    /// Calculates the rounded up integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is negative or zero</exception>
+    public static int Log2Ceiling(this Int128 value) {
+        if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        ulong highBits = (ulong)(--value >> 64);
+        return highBits > 0 ? 128 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 64 - BitOperations.LeadingZeroCount((ulong)value);
+    }
+
+    /// <summary>
+    /// Calculates the rounded up integer portion of the base 2 logarithm of the value.
+    /// </summary>
+    /// <param name="value">value to take log2 of</param>
+    /// <returns>integer portion of the base 2 logarithm of value</returns>
+    /// <exception cref="ArgumentOutOfRangeException">if value is zero</exception>
+    public static int Log2Ceiling(this UInt128 value) {
+        if (value == 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive non-zero");
+        ulong highBits = (ulong)(--value >> 64);
+        return highBits > 0 ? 128 - BitOperations.LeadingZeroCount((ulong)(value >> 64)) : 64 - BitOperations.LeadingZeroCount((ulong)value);
     }
 
     /// <summary>
@@ -413,10 +600,10 @@ public static class NumberExtensions {
 
         var mantissa = l & ((1L << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return mantissa.Log2Ceiling() - 1023 - 51;
+            return -1010 - BitOperations.LeadingZeroCount((ulong)--mantissa);
 
         // there is an implied 1 prefix on the mantissa normally
-        return (int)(exponent - 1023) + (mantissa == 0 ? 0 : 1);
+        return (int)exponent - (mantissa == 0 ? 1023 : 1022);
     }
 
     /// <summary>
@@ -437,10 +624,10 @@ public static class NumberExtensions {
 
         var mantissa = i & ((1 << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return mantissa.Log2Ceiling() - 127 - 22;
+            return -117 - BitOperations.LeadingZeroCount((uint)--mantissa);
 
         // there is an implied 1 prefix on the mantissa normally
-        return exponent - 127 + (mantissa == 0 ? 0 : 1);
+        return exponent - (mantissa == 0 ? 127 : 126);
     }
 
     /// <summary>
@@ -461,12 +648,12 @@ public static class NumberExtensions {
 
         var mantissa = s & ((1 << MANTISSA_BITS) - 1);
         if (exponent == 0) // min exponent = denormalized or zero
-            return mantissa.Log2Ceiling() - 15 - 9;
+            return 8 - BitOperations.LeadingZeroCount((uint)--mantissa);
 
         // there is an implied 1 prefix on the mantissa normally
-        return exponent - 15 + (mantissa == 0 ? 0 : 1);
+        return exponent - (mantissa == 0 ? 15 : 14);
     }
-    
+
     /// <summary>
     /// Performs a modulo multiplication operation.
     /// </summary>
@@ -576,7 +763,7 @@ public static class NumberExtensions {
     /// <returns>(mul * num^exp) % mod</returns>
     public static byte ModPow(this byte mod, byte num, byte exp, byte mul = 1) {
         if (exp > 0) {
-            for (;;) {
+            for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
                 exp >>= 1;
@@ -602,7 +789,7 @@ public static class NumberExtensions {
             exp = (sbyte)-exp;
         }
         if (exp > 0) {
-            for (;;) {
+            for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
                 exp >>= 1;
@@ -624,7 +811,7 @@ public static class NumberExtensions {
     /// <returns>(mul * num^exp) % mod</returns>
     public static ushort ModPow(this ushort mod, ushort num, ushort exp, ushort mul = 1) {
         if (exp > 0) {
-            for (;;) {
+            for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
                 exp >>= 1;
@@ -650,7 +837,7 @@ public static class NumberExtensions {
             exp = (short)-exp;
         }
         if (exp > 0) {
-            for (;;) {
+            for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
                 exp >>= 1;
@@ -672,7 +859,7 @@ public static class NumberExtensions {
     /// <returns>(mul * num^exp) % mod</returns>
     public static uint ModPow(this uint mod, uint num, uint exp, uint mul = 1) {
         if (exp > 0) {
-            for (;;) {
+            for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
                 exp >>= 1;
@@ -698,7 +885,7 @@ public static class NumberExtensions {
             exp = -exp;
         }
         if (exp > 0) {
-            for (;;) {
+            for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
                 exp >>= 1;
@@ -720,7 +907,7 @@ public static class NumberExtensions {
     /// <returns>(mul * num^exp) % mod</returns>
     public static ulong ModPow(this ulong mod, ulong num, ulong exp, ulong mul = 1) {
         if (exp > 0) {
-            for (;;) {
+            for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
                 exp >>= 1;
@@ -746,7 +933,7 @@ public static class NumberExtensions {
             exp = -exp;
         }
         if (exp > 0) {
-            for (;;) {
+            for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
                 exp >>= 1;
@@ -777,7 +964,7 @@ public static class NumberExtensions {
     /// <returns>(mul * num^exp) % mod</returns>
     public static UInt128 ModPow(this UInt128 mod, UInt128 num, UInt128 exp, UInt128 mul) {
         if (exp > 0) {
-            for (;;) {
+            for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
                 exp >>= 1;
@@ -812,7 +999,7 @@ public static class NumberExtensions {
             exp = -exp;
         }
         if (exp > 0) {
-            for (;;) {
+            for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
                 exp >>= 1;
@@ -847,7 +1034,7 @@ public static class NumberExtensions {
             exp = (sbyte)-exp;
         }
         if (exp > 0) {
-            for (;;) {
+            for (; ; ) {
                 if ((exp & 1) == 1)
                     mul = mod.ModMul(mul, num);
                 exp >>= 1;
