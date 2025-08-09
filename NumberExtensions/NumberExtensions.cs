@@ -40,6 +40,10 @@ public static class NumberExtensions {
         UINT128_MASK32 = new(ULONG_MASK32, ULONG_MASK32),
         UINT128_MASK64 = new(ulong.MinValue, ulong.MaxValue);
 
+    const int DOUBLE_MANTISSA_BITS = 52, DOUBLE_EXPONENT_BITS = 11;
+    const int FLOAT_MANTISSA_BITS = 23, FLOAT_EXPONENT_BITS = 8;
+    const int HALF_MANTISSA_BITS = 10, HALF_EXPONENT_BITS = 5;
+
     /// <summary>
     /// Counts the number of bits set in the value.
     /// </summary>
@@ -249,7 +253,7 @@ public static class NumberExtensions {
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
     public static bool IsPowerOf2(this double value) {
-        const int MANTISSA_BITS = 52, EXPONENT_BITS = 11;
+        const int MANTISSA_BITS = DOUBLE_MANTISSA_BITS, EXPONENT_BITS = DOUBLE_EXPONENT_BITS;
         long l = BitConverter.DoubleToInt64Bits(value);
         if (l <= 0) // negative or zero or -NaN or -Infinity
             return false;
@@ -272,7 +276,7 @@ public static class NumberExtensions {
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
     public static bool IsPowerOf2(this float value) {
-        const int MANTISSA_BITS = 23, EXPONENT_BITS = 8;
+        const int MANTISSA_BITS = FLOAT_MANTISSA_BITS, EXPONENT_BITS = FLOAT_EXPONENT_BITS;
         int i = BitConverter.SingleToInt32Bits(value);
         if (i <= 0) // negative or zero or -NaN or -Infinity
             return false;
@@ -295,7 +299,7 @@ public static class NumberExtensions {
     /// <param name="value">value to check</param>
     /// <returns>true if value is a power of 2</returns>
     public static bool IsPowerOf2(this Half value) {
-        const int MANTISSA_BITS = 10, EXPONENT_BITS = 5;
+        const int MANTISSA_BITS = HALF_MANTISSA_BITS, EXPONENT_BITS = HALF_EXPONENT_BITS;
         short s = BitConverter.HalfToInt16Bits(value);
         if (s <= 0) // negative or zero or -NaN or -Infinity
             return false;
@@ -435,7 +439,7 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Floor(this double value) {
-        const int MANTISSA_BITS = 52, EXPONENT_BITS = 11,
+        const int MANTISSA_BITS = DOUBLE_MANTISSA_BITS, EXPONENT_BITS = DOUBLE_EXPONENT_BITS,
             EXPONENT_BIAS = (1 << (EXPONENT_BITS - 1)) - 1,
             DENORMALIZED_BIAS = ULONG_BITS - EXPONENT_BIAS - MANTISSA_BITS;
 
@@ -462,7 +466,7 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Floor(this float value) {
-        const int MANTISSA_BITS = 23, EXPONENT_BITS = 8,
+        const int MANTISSA_BITS = FLOAT_MANTISSA_BITS, EXPONENT_BITS = FLOAT_EXPONENT_BITS,
             EXPONENT_BIAS = (1 << (EXPONENT_BITS - 1)) - 1,
             DENORMALIZED_BIAS = UINT_BITS - EXPONENT_BIAS - MANTISSA_BITS;
 
@@ -489,7 +493,7 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Floor(this Half value) {
-        const int MANTISSA_BITS = 10, EXPONENT_BITS = 5,
+        const int MANTISSA_BITS = HALF_MANTISSA_BITS, EXPONENT_BITS = HALF_EXPONENT_BITS,
             EXPONENT_BIAS = (1 << (EXPONENT_BITS - 1)) - 1,
             DENORMALIZED_BIAS = UINT_BITS - EXPONENT_BIAS - MANTISSA_BITS;
 
@@ -632,7 +636,7 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Ceiling(this double value) {
-        const int MANTISSA_BITS = 52, EXPONENT_BITS = 11,
+        const int MANTISSA_BITS = DOUBLE_MANTISSA_BITS, EXPONENT_BITS = DOUBLE_EXPONENT_BITS,
             EXPONENT_BIAS = (1 << (EXPONENT_BITS - 1)) - 1,
             DENORMALIZED_BIAS = ULONG_BITS - EXPONENT_BIAS - MANTISSA_BITS + 1;
 
@@ -659,7 +663,7 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Ceiling(this float value) {
-        const int MANTISSA_BITS = 23, EXPONENT_BITS = 8,
+        const int MANTISSA_BITS = FLOAT_MANTISSA_BITS, EXPONENT_BITS = FLOAT_EXPONENT_BITS,
             EXPONENT_BIAS = (1 << (EXPONENT_BITS - 1)) - 1,
             DENORMALIZED_BIAS = UINT_BITS - EXPONENT_BIAS - MANTISSA_BITS + 1;
 
@@ -686,7 +690,7 @@ public static class NumberExtensions {
     /// <returns>integer portion of the base 2 logarithm of value</returns>
     /// <exception cref="ArgumentOutOfRangeException">if value is negative, zero, infinity or NaN</exception>
     public static int Log2Ceiling(this Half value) {
-        const int MANTISSA_BITS = 10, EXPONENT_BITS = 5,
+        const int MANTISSA_BITS = HALF_MANTISSA_BITS, EXPONENT_BITS = HALF_EXPONENT_BITS,
             EXPONENT_BIAS = (1 << (EXPONENT_BITS - 1)) - 1,
             DENORMALIZED_BIAS = UINT_BITS - EXPONENT_BIAS - MANTISSA_BITS + 1;
 
