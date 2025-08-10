@@ -1,8 +1,8 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using NumberExtensions;
 
-namespace NumberExtensionsBenchmark; 
+namespace NumberExtensionsBenchmark;
 
 public class NumberExtensionsBenchmark {
     private readonly double d;
